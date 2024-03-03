@@ -1,0 +1,17 @@
+{
+  "resources/js/app.js": {
+    "file": "assets/app-D1pLVXE5.js",
+    "src": "resources/js/app.js",
+    "isEntry": true
+  },
+  "resources/js/numberSort.js": {
+    "file": "assets/numberSort-BDGDpZat.js",
+    "src": "resources/js/numberSort.js",
+    "isEntry": true
+  },
+  "resources/sass/app.scss": {
+    "file": "assets/app-C1rlX_WL.css",
+    "src": "resources/sass/app.scss",
+    "isEntry": true
+  }
+}

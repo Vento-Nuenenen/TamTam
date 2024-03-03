@@ -17,12 +17,12 @@ class GroupsTableSeeder extends Seeder
             'Coop',
         ];
 
-        foreach($groups_container as $name) {
+        foreach ($groups_container as $name) {
             $group = Group::where('name', '=', $name)->first();
 
-            if($group == null) {
+            if ($group == null) {
                 Group::create([
-                    'name' => $name
+                    'name' => $name,
                 ]);
             }
         }
