@@ -2,6 +2,7 @@
 
 namespace App\Exceptions;
 
+use App;
 use Illuminate\Foundation\Exceptions\Handler as ExceptionHandler;
 use Throwable;
 
@@ -26,5 +27,25 @@ class Handler extends ExceptionHandler
         $this->reportable(function (Throwable $e) {
             //
         });
+    }
+
+    /*
+ * Report or log an exception.
+ *
+ * @param  Throwable  $exception
+ * @return void
+ *
+ * @throws Throwable
+ */
+    public function report(Throwable $exception): void
+    {
+        if(App::environment('production')) {
+            if($this->shouldReport($exception)) {
+                $airbrakeNotifier = App::make('Airbrake\Notifier');
+                $airbrakeNotifier->notify($exception);
+            }
+        }
+
+        parent::report($exception);
     }
 }
