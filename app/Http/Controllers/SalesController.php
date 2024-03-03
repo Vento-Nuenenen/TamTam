@@ -15,8 +15,6 @@ class SalesController extends Controller
 {
     /**
      * Display a listing of the resource.
-     *
-     * @return Application|Factory|View
      */
     public function index(): View|Application|Factory
     {
@@ -28,9 +26,6 @@ class SalesController extends Controller
 
     /**
      * Lookup EAN Codes.
-     *
-     * @param  Request  $request
-     * @return Application|ResponseFactory|Response
      */
     public function lookup(Request $request): Response|ResponseFactory|Application
     {
@@ -41,9 +36,6 @@ class SalesController extends Controller
 
     /**
      * Store a newly created resource in storage.
-     *
-     * @param  Request  $request
-     * @return void
      */
     public function store(Request $request): void
     {
