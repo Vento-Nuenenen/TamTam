@@ -5,12 +5,11 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 
 class Participant extends Model
 {
     use HasFactory;
-
-    protected $table = 'participations';
 
     protected $fillable = [
         'scout_name',
@@ -31,5 +30,10 @@ class Participant extends Model
     public function group(): BelongsTo
     {
         return $this->belongsTo(Group::class);
+    }
+
+    public function points(): HasMany
+    {
+        return $this->hasMany(Points::class);
     }
 }
