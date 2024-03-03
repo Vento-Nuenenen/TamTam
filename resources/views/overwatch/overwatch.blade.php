@@ -66,6 +66,8 @@
             </div>
         </div>
 
+        <br />
+
         <div class="card">
             <div class="card-header">
                 <h5>Tischordnung erstellen</h5>
@@ -77,6 +79,8 @@
                 </form>
             </div>
         </div>
+
+        <br />
 
         <div class="card">
             <div class="card-header" >
