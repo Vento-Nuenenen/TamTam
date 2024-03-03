@@ -6,12 +6,14 @@ use App\Models\Participant;
 
 class Barcode
 {
-    public static function generateBarcode()
+    public static function generateBarcode(): string
     {
         do {
             $barcode = (string) mt_rand(100000000000, 999999999999);
             $barcode = self::ean13_check_digit($barcode);
-        } while(Participant::where('barcode', $barcode)->exists());
+        } while (Participant::where('barcode', $barcode)->exists());
+
+        return $barcode;
     }
 
     public static function ean13_check_digit($digits)

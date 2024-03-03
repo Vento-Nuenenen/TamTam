@@ -39,8 +39,8 @@ class Handler extends ExceptionHandler
  */
     public function report(Throwable $exception): void
     {
-        if(App::environment('production')) {
-            if($this->shouldReport($exception)) {
+        if (App::environment('production')) {
+            if ($this->shouldReport($exception)) {
                 $airbrakeNotifier = App::make('Airbrake\Notifier');
                 $airbrakeNotifier->notify($exception);
             }
