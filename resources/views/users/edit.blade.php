@@ -16,19 +16,19 @@
 
         <div class="card">
             <div class="card-header">
-                <h5 class="mb-0">Neuer Benutzer</h5>
+                <h5 class="mb-0">Benutzer bearbeiten</h5>
 
                 <a href="{{  route('users') }}" class="float-right">Zurück zu Benutzern</a>
             </div>
             <div class="card-body">
-                {!! Form::open(array('route' => 'store-users', 'method' => 'POST', 'role' => 'form', 'class' => 'needs-validation')) !!}
+                {!! Form::open(array('route' => ['update-users',$users->id], 'method' => 'POST', 'role' => 'form', 'class' => 'needs-validation')) !!}
                 {!! csrf_field() !!}
 
                 <div class="form-group has-feedback row {{ $errors->has('scout_name') ? ' has-error ' : '' }}">
                     {!! Form::label('scout_name', 'Pfadiname', array('class' => 'col-md-3 control-label')); !!}
                     <div class="col-md-9">
                         <div class="input-group">
-                            {!! Form::text('scout_name', NULL, array('id' => 'scout_name', 'class' => 'form-control', 'placeholder' => 'Pfadiname')) !!}
+                            {!! Form::text('scout_name', old('scout_name', $users->scout_name ?? null), array('id' => 'scout_name', 'class' => 'form-control', 'placeholder' => 'Pfadiname')) !!}
                             <div class="input-group-append">
                                 <label class="input-group-text" for="scout_name">
                                     <i class="fa fa-user" aria-hidden="true"></i>
@@ -47,7 +47,7 @@
                     {!! Form::label('first_name', 'Vorname', array('class' => 'col-md-3 control-label')); !!}
                     <div class="col-md-9">
                         <div class="input-group">
-                            {!! Form::text('first_name', NULL, array('id' => 'first_name', 'class' => 'form-control', 'placeholder' => 'Vorname', 'required')) !!}
+                            {!! Form::text('first_name', old('first_name',$users->first_name ?? null), array('id' => 'first_name', 'class' => 'form-control', 'placeholder' => 'Vorname', 'required')) !!}
                             <div class="input-group-append">
                                 <label class="input-group-text" for="first_name">
                                     <i class="fa fa-user" aria-hidden="true"></i>
@@ -66,7 +66,7 @@
                     {!! Form::label('last_name', 'Nachname', array('class' => 'col-md-3 control-label')); !!}
                     <div class="col-md-9">
                         <div class="input-group">
-                            {!! Form::text('last_name', NULL, array('id' => 'last_name', 'class' => 'form-control', 'placeholder' => 'Nachname', 'required')) !!}
+                            {!! Form::text('last_name', old('last_name',$users->last_name ?? null), array('id' => 'last_name', 'class' => 'form-control', 'placeholder' => 'Nachname', 'required')) !!}
                             <div class="input-group-append">
                                 <label class="input-group-text" for="last_name">
                                     <i class="fa fa-user" aria-hidden="true"></i>
@@ -85,7 +85,7 @@
                     {!! Form::label('email', 'E-Mail', array('class' => 'col-md-3 control-label')); !!}
                     <div class="col-md-9">
                         <div class="input-group">
-                            {!! Form::text('email', NULL, array('id' => 'email', 'class' => 'form-control', 'placeholder' => 'E-Mail', 'required')) !!}
+                            {!! Form::text('email', old('email', $users->email ?? null), array('id' => 'email', 'class' => 'form-control', 'placeholder' => 'E-Mail', 'required')) !!}
                             <div class="input-group-append">
                                 <label class="input-group-text" for="email">
                                     <i class="fa fa-mail-forward" aria-hidden="true"></i>
@@ -138,7 +138,7 @@
                     </div>
                 </div>
 
-                {!! Form::button('Benutzer erstellen', array('class' => 'btn btn-success margin-bottom-1 mb-1 float-right','type' => 'submit' )) !!}
+                {!! Form::button('Benutzer aktualisieren', array('class' => 'btn btn-success margin-bottom-1 mb-1 float-right','type' => 'submit' )) !!}
                 {!! Form::close() !!}
             </div>
         </div>

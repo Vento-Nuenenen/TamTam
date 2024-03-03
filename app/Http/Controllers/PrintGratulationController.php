@@ -8,28 +8,27 @@ use Illuminate\Contracts\View\View;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use PDF;
+
 class PrintGratulationController extends Controller
 {
     /**
      * Display a listing of the resource.
-     *
-     * @return Application|Factory|View
      */
     public function index(): View|Factory|Application
     {
-        if(!file_exists(storage_path('app/template/gratulation.txt'))) {
+        if (! file_exists(storage_path('app/template/gratulation.txt'))) {
             touch(storage_path('app/template/gratulation.txt'));
         }
 
-        if(!file_exists(storage_path('app/template/title_m.txt'))) {
+        if (! file_exists(storage_path('app/template/title_m.txt'))) {
             touch(storage_path('app/template/title_m.txt'));
         }
 
-        if(!file_exists(storage_path('app/template/title_f.txt'))) {
+        if (! file_exists(storage_path('app/template/title_f.txt'))) {
             touch(storage_path('app/template/title_f.txt'));
         }
 
-        if(!file_exists(storage_path('app/template/title_o.txt'))) {
+        if (! file_exists(storage_path('app/template/title_o.txt'))) {
             touch(storage_path('app/template/title_o.txt'));
         }
 
@@ -48,29 +47,29 @@ class PrintGratulationController extends Controller
 
     public function export(Request $request)
     {
-        if($request->action == 'save') {
+        if ($request->action == 'save') {
             file_put_contents(storage_path('app/template/gratulation.txt'), $request->certificate_text);
             file_put_contents(storage_path('app/template/title_m.txt'), $request->title_m);
             file_put_contents(storage_path('app/template/title_f.txt'), $request->title_f);
             file_put_contents(storage_path('app/template/title_o.txt'), $request->title_o);
 
             return redirect()->back()->with('message', 'Neuer Text wurde gespeichert!');
-        } elseif($request->input('action') == 'print') {
+        } elseif ($request->input('action') == 'print') {
             $persons = DB::table('participations')->where('course_passed', '=', true)->get();
 
-            foreach($persons as $person) {
+            foreach ($persons as $person) {
                 $text = $request->certificate_text;
                 $title = '';
 
-                if(str_starts_with($person->gender, 'M')) {
+                if (str_starts_with($person->gender, 'M')) {
                     $title = file_get_contents(storage_path('app/template/title_m.txt'));
-                } elseif(str_starts_with($person->gender, 'W')) {
+                } elseif (str_starts_with($person->gender, 'W')) {
                     $title = file_get_contents(storage_path('app/template/title_f.txt'));
-                } elseif(str_starts_with($person->gender, 'A')) {
+                } elseif (str_starts_with($person->gender, 'A')) {
                     $title = file_get_contents(storage_path('app/template/title_o.txt'));
                 }
 
-                if(isset($person->scout_name)) {
+                if (isset($person->scout_name)) {
                     $text = str_replace('@name', $person->scout_name, $text);
                 } else {
                     $text = str_replace('@name', $person->first_name, $text);

@@ -16,8 +16,6 @@ class PrintIdentificationController extends Controller
 {
     /**
      * Display a listing of the resource.
-     *
-     * @return Application|Factory|View
      */
     public function index(): View|Application|Factory
     {
