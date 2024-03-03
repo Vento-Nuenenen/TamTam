@@ -15,7 +15,7 @@ class UsersController extends Controller
     /**
      * Display a listing of the resource.
      */
-    public function index(Request $request): View|Application|Factory|\Illuminate\Contracts\Foundation\Application
+    public function index(Request $request): View|Application|Factory
     {
         if($request->input('search') == null) {
             $users = User::all();
@@ -32,7 +32,7 @@ class UsersController extends Controller
     /**
      * Show the form for creating a new resource.
      */
-    public function create(): View|Application|Factory|\Illuminate\Contracts\Foundation\Application
+    public function create(): View|Application|Factory
     {
         return view('users.add');
     }
@@ -72,7 +72,7 @@ class UsersController extends Controller
     /**
      * Show the form for editing the specified resource.
      */
-    public function edit(user $user): View|Application|Factory|\Illuminate\Contracts\Foundation\Application
+    public function edit(user $user): View|Application|Factory
     {
         $user = User::find($user);
 
@@ -97,7 +97,7 @@ class UsersController extends Controller
 
             $password_repeat = null;
 
-            User::where('id', '=', $uid)->update([
+            User::where('id', '=', $user)->update([
                 'scout_name' => $scout_name,
                 'first_name' => $first_name,
                 'last_name' => $last_name,
@@ -107,7 +107,7 @@ class UsersController extends Controller
 
             return redirect()->back()->with('message', 'Benutzer wurde aktualisiert.');
         } elseif($password == null) {
-            User::where('id', '=', $uid)->update([
+            User::where('id', '=', $user)->update([
                 'scout_name' => $scout_name,
                 'first_name' => $first_name,
                 'last_name' => $last_name,
