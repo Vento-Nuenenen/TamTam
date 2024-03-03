@@ -30,18 +30,18 @@ class Handler extends ExceptionHandler
     }
 
     /*
- * Report or log an exception.
- *
- * @param  Throwable  $exception
- * @return void
- *
- * @throws Throwable
- */
+     * Report or log an exception.
+     *
+     * @param  \Throwable  $exception
+     * @return void
+     *
+     * @throws \Exception
+     */
     public function report(Throwable $exception): void
     {
-        if (App::environment('production')) {
-            if ($this->shouldReport($exception)) {
-                $airbrakeNotifier = App::make('Airbrake\Notifier');
+        if(App::environment('production')){
+            if($this->shouldReport($exception)){
+                $airbrakeNotifier = \App::make('Airbrake\Notifier');
                 $airbrakeNotifier->notify($exception);
             }
         }
