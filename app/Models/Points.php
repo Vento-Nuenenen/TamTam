@@ -13,7 +13,7 @@ class Points extends Model
     protected $fillable = [
         'reason',
         'points',
-        'is_addition'
+        'is_addition',
     ];
 
     public function participant(): BelongsTo
