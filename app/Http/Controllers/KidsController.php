@@ -2,12 +2,7 @@
 
 namespace App\Http\Controllers;
 
-use App\Helpers\Barcode;
-use App\Models\Group;
 use App\Models\Kid;
-use Illuminate\Contracts\View\Factory;
-use Illuminate\Contracts\View\View;
-use Illuminate\Foundation\Application;
 use Illuminate\Http\Request;
 
 class KidsController extends Controller
@@ -15,13 +10,13 @@ class KidsController extends Controller
     /**
      * Display a listing of the resource.
      */
-    public function index(Request $request): View|Application|Factory
+    public function index(Request $request)
     {
-        if ($request->search == null) {
+        if($request->input('search') == null) {
             $kids = Kid::all();
         } else {
             $search_string = $request->input('search');
-            $kids = Kid::with('groups')
+            $kids = Kid::leftJoin('groups', 'groups.id', '=', 'kids.FK_GID')
                 ->select('kids.*', 'groups.group_name')
                 ->where('scout_name', 'LIKE', "%$search_string%")
                 ->orWhere('last_name', 'LIKE', "%$search_string%")
@@ -36,11 +31,9 @@ class KidsController extends Controller
     /**
      * Show the form for creating a new resource.
      */
-    public function create(): View|Application|Factory
+    public function create()
     {
-        $groups = Group::all();
-
-        return view('kids.add', ['groups' => $groups]);
+        //
     }
 
     /**
@@ -48,23 +41,13 @@ class KidsController extends Controller
      */
     public function store(Request $request)
     {
-        $scout_name = $request->input('scout_name');
-        $first_name = $request->input('first_name');
-        $last_name = $request->input('last_name');
-        $address = $request->input('address');
-        $plz = $request->input('plz');
-        $place = $request->input('place');
-        $birthday = $request->input('birthday');
-        $gender = $request->input('gender');
-        $group = $request->input('group');
-        $barcode = Barcode::generateBarcode();
-
+        //
     }
 
     /**
      * Display the specified resource.
      */
-    public function show(string $id)
+    public function show(Kid $kid)
     {
         //
     }
@@ -72,7 +55,7 @@ class KidsController extends Controller
     /**
      * Show the form for editing the specified resource.
      */
-    public function edit(string $id)
+    public function edit(Kid $kid)
     {
         //
     }
@@ -80,7 +63,7 @@ class KidsController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, string $id)
+    public function update(Request $request, Kid $kid)
     {
         //
     }
@@ -88,7 +71,7 @@ class KidsController extends Controller
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(string $id)
+    public function destroy(Kid $kid)
     {
         //
     }
