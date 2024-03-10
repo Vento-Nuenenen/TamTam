@@ -4,22 +4,25 @@ namespace App\Http\Controllers;
 
 use App\Helpers\Barcode;
 use App\Models\Group;
-use App\Models\Participant;
+use App\Models\Kid;
+use Illuminate\Contracts\View\Factory;
+use Illuminate\Contracts\View\View;
+use Illuminate\Foundation\Application;
 use Illuminate\Http\Request;
 
-class ParticipationsController extends Controller
+class KidsController extends Controller
 {
     /**
      * Display a listing of the resource.
      */
-    public function index(Request $request)
+    public function index(Request $request): View|Application|Factory
     {
         if ($request->search == null) {
-            $participations = Participant::all();
+            $kids = Kid::all();
         } else {
             $search_string = $request->input('search');
-            $participations = Participant::with('groups')
-                ->select('participations.*', 'groups.group_name')
+            $kids = Kid::with('groups')
+                ->select('kids.*', 'groups.group_name')
                 ->where('scout_name', 'LIKE', "%$search_string%")
                 ->orWhere('last_name', 'LIKE', "%$search_string%")
                 ->orWhere('first_name', 'LIKE', "%$search_string%")
@@ -27,17 +30,17 @@ class ParticipationsController extends Controller
                 ->orWhere('barcode', 'LIKE', "%$search_string%")->get();
         }
 
-        return view('participations.participations', ['participations' => $participations]);
+        return view('kids.kids', ['kids' => $kids]);
     }
 
     /**
      * Show the form for creating a new resource.
      */
-    public function create()
+    public function create(): View|Application|Factory
     {
         $groups = Group::all();
 
-        return view('participations.add', ['groups' => $groups]);
+        return view('kids.add', ['groups' => $groups]);
     }
 
     /**

@@ -16,9 +16,9 @@ class PassedController extends Controller
      */
     public function index(): Application|Factory|View
     {
-        $participants = Participant::all();
+        $participations = Participant::all();
 
-        return view('passed.passed', ['participants' => $participants]);
+        return view('passed.passed', ['participations' => $participations]);
     }
 
     public function set_flag(Request $request): RedirectResponse

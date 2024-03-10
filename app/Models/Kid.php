@@ -7,9 +7,10 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 
-class Participant extends Model
+class Kid extends Model
 {
     use HasFactory;
+
 
     protected $fillable = [
         'scout_name',
