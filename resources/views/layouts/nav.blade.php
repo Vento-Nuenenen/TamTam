@@ -32,7 +32,7 @@
                                 Gruppen
                             </a>
                             <div class="dropdown-divider"></div>
-                            <a class="dropdown-item {{ Request::is('participations/')}}" href="{{ url('/participations') }}">
+                            <a class="dropdown-item {{ Request::is('kids/')}}" href="{{ url('/kids') }}">
                                 Teilnehmer
                             </a>
                             <a class="dropdown-item {{ Request::is('passed/')}}" href="{{ url('/passed') }}">

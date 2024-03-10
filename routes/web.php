@@ -4,6 +4,7 @@ use App\Http\Controllers\CurrentPointsController;
 use App\Http\Controllers\EmergencyNumbersController;
 use App\Http\Controllers\GroupsController;
 use App\Http\Controllers\ItemsController;
+use App\Http\Controllers\KidsController;
 use App\Http\Controllers\OverwatchController;
 use App\Http\Controllers\ParticipationsController;
 use App\Http\Controllers\PassedController;
@@ -33,13 +34,13 @@ Auth::routes(['register' => false]);
 Route::group(['middleware' => ['auth']], function () {
     Route::any('/overwatch', [OverwatchController::class, 'index'])->name('overwatch');
 
-    Route::any('/participations', [ParticipationsController::class, 'index'])->name('participations');
-    Route::get('/participations/add', [ParticipationsController::class, 'create'])->name('add-participations');
-    Route::post('/participations/store', [ParticipationsController::class, 'store'])->name('store-participations');
-    Route::post('participations/import', [ParticipationsController::class, 'import'])->name('import-participations');
-    Route::get('/participations/edit/{pid}', [ParticipationsController::class, 'edit'])->name('edit-participations');
-    Route::post('/participations/update/{pid}', [ParticipationsController::class, 'update'])->name('update-participations');
-    Route::get('/participations/destroy/{pid}', [ParticipationsController::class, 'destroy'])->name('destroy-participations');
+    Route::any('/kids', [KidsController::class, 'index'])->name('kids');
+    Route::get('/kids/add', [KidsController::class, 'create'])->name('add-kids');
+    Route::post('/kids/store', [KidsController::class, 'store'])->name('store-kids');
+    Route::post('kids/import', [KidsController::class, 'import'])->name('import-kids');
+    Route::get('/kids/edit/{pid}', [KidsController::class, 'edit'])->name('edit-kids');
+    Route::post('/kids/update/{pid}', [KidsController::class, 'update'])->name('update-kids');
+    Route::get('/kids/destroy/{pid}', [KidsController::class, 'destroy'])->name('destroy-kids');
 
     Route::any('/users', [UsersController::class, 'index'])->name('users');
     Route::get('/users/add', [UsersController::class, 'create'])->name('add-users');
