@@ -26,6 +26,8 @@
             </div>
         </div>
 
+        <br />
+
         <div class="card">
             <div class="card-header">
                 <h5 class="float-left">Teilnehmer</h5>
