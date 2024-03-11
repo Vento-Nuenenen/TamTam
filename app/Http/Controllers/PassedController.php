@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Kid;
 use App\Models\Participant;
 use Illuminate\Contracts\Foundation\Application;
 use Illuminate\Contracts\View\Factory;
@@ -16,9 +17,9 @@ class PassedController extends Controller
      */
     public function index(): Application|Factory|View
     {
-        $participants = Participant::all();
+        $kids = Kid::all();
 
-        return view('passed.passed', ['participants' => $participants]);
+        return view('passed.passed', ['kids' => $kids]);
     }
 
     public function set_flag(Request $request): RedirectResponse
@@ -27,11 +28,11 @@ class PassedController extends Controller
         ! empty($request->input('not_passed')) ? $not_passed = array_diff($request->input('not_passed'), $passed) : $not_passed = [];
 
         foreach ($passed as $pass) {
-            Participant::where('id', '=', $pass)->update(['course_passed' => true]);
+            Kid::where('id', '=', $pass)->update(['course_passed' => true]);
         }
 
         foreach ($not_passed as $npsd) {
-            Participant::where('id', '=', $npsd)->update(['course_passed' => false]);
+            Kid::where('id', '=', $npsd)->update(['course_passed' => false]);
         }
 
         return redirect()->back()->with('message', 'Bestanden wurde aktualisiert');

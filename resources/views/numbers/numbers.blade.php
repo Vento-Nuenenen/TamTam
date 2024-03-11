@@ -16,6 +16,8 @@
             </div>
         </div>
 
+        <br />
+
         <div class="card">
             <div class="card-header">
                 <h2 class="float-left">Alle Notfallnummern</h2>

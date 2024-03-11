@@ -4,22 +4,22 @@ namespace App\Http\Controllers;
 
 use App\Helpers\Barcode;
 use App\Models\Group;
-use App\Models\Participant;
+use App\Models\Kid;
 use Illuminate\Http\Request;
 
-class ParticipationsController extends Controller
+class KidsController extends Controller
 {
     /**
      * Display a listing of the resource.
      */
     public function index(Request $request)
     {
-        if ($request->search == null) {
-            $participations = Participant::all();
+        if($request->input('search') == null) {
+            $kids = Kid::all();
         } else {
             $search_string = $request->input('search');
-            $participations = Participant::with('groups')
-                ->select('participations.*', 'groups.group_name')
+            $kids = Kid::leftJoin('groups', 'groups.id', '=', 'kids.FK_GID')
+                ->select('kids.*', 'groups.group_name')
                 ->where('scout_name', 'LIKE', "%$search_string%")
                 ->orWhere('last_name', 'LIKE', "%$search_string%")
                 ->orWhere('first_name', 'LIKE', "%$search_string%")
@@ -27,7 +27,7 @@ class ParticipationsController extends Controller
                 ->orWhere('barcode', 'LIKE', "%$search_string%")->get();
         }
 
-        return view('participations.participations', ['participations' => $participations]);
+        return view('kids.kids', ['kids' => $kids]);
     }
 
     /**
@@ -37,7 +37,7 @@ class ParticipationsController extends Controller
     {
         $groups = Group::all();
 
-        return view('participations.add', ['groups' => $groups]);
+        return view('kids.add', ['groups' => $groups]);
     }
 
     /**
@@ -56,20 +56,48 @@ class ParticipationsController extends Controller
         $group = $request->input('group');
         $barcode = Barcode::generateBarcode();
 
-    }
+        if($request->file('tn_img')) {
+            $img_name = 'tnimg_'.time().'.'.$request->file('tn_img')->extension();
+            $request->file('tn_img')->move(storage_path('app/public/img'), $img_name);
+        } else {
+            $img_name = null;
+        }
 
-    /**
-     * Display the specified resource.
-     */
-    public function show(string $id)
-    {
-        //
+        if($gender) {
+            if($gender == 'm') {
+                $gender = 'Männlich';
+            } elseif($gender == 'w') {
+                $gender = 'Weiblich';
+            } elseif($gender == 'd') {
+                $gender = 'Anderes';
+            } else {
+                $gender = null;
+            }
+        } else {
+            $gender = null;
+        }
+
+        Kid::create([
+            'scout_name' => $scout_name,
+            'first_name' => $first_name,
+            'last_name' => $last_name,
+            'barcode' => $barcode,
+            'address' => $address,
+            'plz' => $plz,
+            'place' => $place,
+            'birthday' => $birthday,
+            'gender' => $gender,
+            'group_id' => $group,
+            'person_picture' => $img_name,
+        ]);
+
+        return redirect()->back()->with('message', 'Teilnehmer wurde erstellt.');
     }
 
     /**
      * Show the form for editing the specified resource.
      */
-    public function edit(string $id)
+    public function edit(Kid $kid)
     {
         //
     }
@@ -77,7 +105,7 @@ class ParticipationsController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, string $id)
+    public function update(Request $request, Kid $kid)
     {
         //
     }
@@ -85,7 +113,7 @@ class ParticipationsController extends Controller
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(string $id)
+    public function destroy(Kid $kid)
     {
         //
     }

@@ -18,10 +18,10 @@
             <div class="card-header">
                 <h5 class="float-left">Teilnehmer erstellen</h5>
 
-                <a href="{{  route('participations') }}" class="float-right">Zurück zu TNs</a>
+                <a href="{{  route('kids') }}" class="float-right">Zurück zu TNs</a>
             </div>
             <div class="card-body">
-                {!! Form::open(array('route' => 'store-participations', 'method' => 'POST', 'role' => 'form', 'class' => 'needs-validation', 'enctype' => "multipart/form-data")) !!}
+                {!! Form::open(array('route' => 'store-kids', 'method' => 'POST', 'role' => 'form', 'class' => 'needs-validation', 'enctype' => "multipart/form-data")) !!}
                 {!! csrf_field() !!}
 
                 <div class="form-group has-feedback row {{ $errors->has('scout_name') ? ' has-error ' : '' }}">
@@ -225,6 +225,8 @@
             <br />
         </div>
 
+        <br />
+
         <div class="card">
             <div class="card-header" id="headingTwo">
                 <h5>Teilnehmer importieren</h5>
@@ -266,7 +268,7 @@
                         </tbody>
                     </table>
                     <hr />
-                    {!! Form::open(array('route' => 'import-participations', 'method' => 'POST', 'role' => 'form', 'class' => 'needs-validation', 'enctype' => "multipart/form-data")) !!}
+                    {!! Form::open(array('route' => 'import-kids', 'method' => 'POST', 'role' => 'form', 'class' => 'needs-validation', 'enctype' => "multipart/form-data")) !!}
                     {!! csrf_field() !!}
                     <input type="file" accept="text/csv" id="participations_list" name="participations_list" >
                     {!! Form::button('Teilnehmer importieren', array('class' => 'btn btn-success margin-bottom-1 mb-1 float-right','type' => 'submit' )) !!}

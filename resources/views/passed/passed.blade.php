@@ -23,18 +23,18 @@
                     <th>Hat Bestanden</th>
                     </thead>
                     <tbody>
-                    @foreach($participations as $participation)
+                    @foreach($kids as $kid)
                         <tr>
                             <td>
-                                @if($participation->scout_name)
-                                    {{ $participation->scout_name }} / {{ $participation->first_name }} {{ $participation->last_name }}
+                                @if($kid->scout_name)
+                                    {{ $kid->scout_name }} / {{ $kid->first_name }} {{ $kid->last_name }}
                                 @else
-                                    {{ $participation->first_name }} {{ $participation->last_name }}
+                                    {{ $kid->first_name }} {{ $kid->last_name }}
                                 @endif
                             </td>
                             <td>
-                                <input type="checkbox" name="has_passed[]" value="{{ $participation->id }}" {{ isset($participation->course_passed) && $participation->course_passed == 1 ? 'checked' : '' }} />
-                                <input type="hidden" name="not_passed[]" value="{{ $participation->id }}" />
+                                <input type="checkbox" name="has_passed[]" value="{{ $kid->id }}" {{ isset($kid->course_passed) && $kid->course_passed == 1 ? 'checked' : '' }} />
+                                <input type="hidden" name="not_passed[]" value="{{ $kid->id }}" />
                             </td>
                         </tr>
                     @endforeach

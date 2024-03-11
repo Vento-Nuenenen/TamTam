@@ -14,7 +14,7 @@ return new class extends Migration
         Schema::create('carts', function (Blueprint $table) {
             $table->id();
             $table->string('cart')->unique();
-            $table->foreignId('FK_PRT')->nullable();
+            $table->foreignId('FK_KID')->nullable();
             $table->foreignId('FK_ITEM')->nullable();
             $table->string('quantity');
             $table->timestamps();

@@ -2,7 +2,7 @@
 
 namespace App\Helpers;
 
-use App\Models\Participant;
+use App\Models\Kid;
 
 class Barcode
 {
@@ -11,7 +11,7 @@ class Barcode
         do {
             $barcode = (string) mt_rand(100000000000, 999999999999);
             $barcode = self::ean13_check_digit($barcode);
-        } while (Participant::where('barcode', $barcode)->exists());
+        } while (Kid::where('barcode', $barcode)->exists());
 
         return $barcode;
     }
