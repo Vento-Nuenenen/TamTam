@@ -45,8 +45,8 @@ class GroupsController extends Controller
         }
 
         Group::create([
-            'group_name' => $group_name,
-            'logo_file_name' => $logo_name
+            'name' => $group_name,
+            'image' => $logo_name
         ]);
 
         return redirect()->back()->with('message', 'Gruppe wurde erstellt.');
@@ -57,9 +57,7 @@ class GroupsController extends Controller
      */
     public function edit(Group $group)
     {
-        $groups = Group::where('id', '=', $group)->first();
-
-        return view('groups.edit', ['groups' => $groups]);
+        return view('groups.edit', ['group' => $group]);
     }
 
     /**
@@ -77,10 +75,10 @@ class GroupsController extends Controller
         }
 
         $group = Group::find($group);
-        $group->group_name = $group_name;
+        $group->name = $group_name;
 
         if($logo_name != null){
-            $group->logo_file_name = $logo_name;
+            $group->image = $logo_name;
         }
 
         $group->save();

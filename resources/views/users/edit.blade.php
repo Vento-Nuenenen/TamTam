@@ -47,7 +47,7 @@
                     {!! Form::label('first_name', 'Vorname', array('class' => 'col-md-3 control-label')); !!}
                     <div class="col-md-9">
                         <div class="input-group">
-                            {!! Form::text('first_name', old('first_name',$users->first_name ?? null), array('id' => 'first_name', 'class' => 'form-control', 'placeholder' => 'Vorname', 'required')) !!}
+                            {!! Form::text('first_name', old('first_name',$user->first_name ?? null), array('id' => 'first_name', 'class' => 'form-control', 'placeholder' => 'Vorname', 'required')) !!}
                             <div class="input-group-append">
                                 <label class="input-group-text" for="first_name">
                                     <i class="fa fa-user" aria-hidden="true"></i>
@@ -66,7 +66,7 @@
                     {!! Form::label('last_name', 'Nachname', array('class' => 'col-md-3 control-label')); !!}
                     <div class="col-md-9">
                         <div class="input-group">
-                            {!! Form::text('last_name', old('last_name',$users->last_name ?? null), array('id' => 'last_name', 'class' => 'form-control', 'placeholder' => 'Nachname', 'required')) !!}
+                            {!! Form::text('last_name', old('last_name',$user->last_name ?? null), array('id' => 'last_name', 'class' => 'form-control', 'placeholder' => 'Nachname', 'required')) !!}
                             <div class="input-group-append">
                                 <label class="input-group-text" for="last_name">
                                     <i class="fa fa-user" aria-hidden="true"></i>
@@ -85,7 +85,7 @@
                     {!! Form::label('email', 'E-Mail', array('class' => 'col-md-3 control-label')); !!}
                     <div class="col-md-9">
                         <div class="input-group">
-                            {!! Form::text('email', old('email', $users->email ?? null), array('id' => 'email', 'class' => 'form-control', 'placeholder' => 'E-Mail', 'required')) !!}
+                            {!! Form::text('email', old('email', $user->email ?? null), array('id' => 'email', 'class' => 'form-control', 'placeholder' => 'E-Mail', 'required')) !!}
                             <div class="input-group-append">
                                 <label class="input-group-text" for="email">
                                     <i class="fa fa-mail-forward" aria-hidden="true"></i>

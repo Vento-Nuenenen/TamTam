@@ -74,8 +74,6 @@ class UsersController extends Controller
      */
     public function edit(user $user): View|Application|Factory
     {
-        $user = User::find($user);
-
         return view('users.edit', ['user' => $user]);
     }
 
@@ -123,9 +121,9 @@ class UsersController extends Controller
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(user $user): RedirectResponse
+    public function destroy(user $user)
     {
-        User::destroy($user);
+        $user->delete();
 
         return redirect()->back()->with('message', 'Benutzer erfolgreich gelöscht.');
     }
