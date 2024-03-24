@@ -20,12 +20,14 @@
     "src": "node_modules/font-awesome/fonts/fontawesome-webfont.woff2"
   },
   "resources/js/app.js": {
-    "file": "assets/app-Abfq94kL.js",
+    "file": "assets/app-DfsaGaoj.js",
+    "name": "app",
     "src": "resources/js/app.js",
     "isEntry": true
   },
   "resources/js/numberSort.js": {
     "file": "assets/numberSort-BDGDpZat.js",
+    "name": "numberSort",
     "src": "resources/js/numberSort.js",
     "isEntry": true
   },
