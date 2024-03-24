@@ -72,15 +72,17 @@ class UsersController extends Controller
     /**
      * Show the form for editing the specified resource.
      */
-    public function edit(user $user): View|Application|Factory
+    public function edit($uid): View|Application|Factory
     {
+        $user = User::find($uid);
+
         return view('users.edit', ['user' => $user]);
     }
 
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, user $user): RedirectResponse
+    public function update(Request $request, $uid): RedirectResponse
     {
         $scout_name = $request->input('scout_name');
         $first_name = $request->input('first_name');
@@ -95,7 +97,7 @@ class UsersController extends Controller
 
             $password_repeat = null;
 
-            User::where('id', '=', $user)->update([
+            User::where('id', '=', $uid)->update([
                 'scout_name' => $scout_name,
                 'first_name' => $first_name,
                 'last_name' => $last_name,
@@ -105,7 +107,7 @@ class UsersController extends Controller
 
             return redirect()->back()->with('message', 'Benutzer wurde aktualisiert.');
         } elseif ($password == null) {
-            User::where('id', '=', $user)->update([
+            User::where('id', '=', $uid)->update([
                 'scout_name' => $scout_name,
                 'first_name' => $first_name,
                 'last_name' => $last_name,
@@ -121,9 +123,9 @@ class UsersController extends Controller
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(user $user)
+    public function destroy($uid)
     {
-        $user->delete();
+        User::destroy($uid);
 
         return redirect()->back()->with('message', 'Benutzer erfolgreich gelöscht.');
     }
