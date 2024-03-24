@@ -21,14 +21,14 @@
                 <a href="{{  route('users') }}" class="float-right">Zurück zu Benutzern</a>
             </div>
             <div class="card-body">
-                {!! Form::open(array('route' => ['update-users',$users->id], 'method' => 'POST', 'role' => 'form', 'class' => 'needs-validation')) !!}
+                {!! Form::open(array('route' => ['update-users',$user->id], 'method' => 'POST', 'role' => 'form', 'class' => 'needs-validation')) !!}
                 {!! csrf_field() !!}
 
                 <div class="form-group has-feedback row {{ $errors->has('scout_name') ? ' has-error ' : '' }}">
                     {!! Form::label('scout_name', 'Pfadiname', array('class' => 'col-md-3 control-label')); !!}
                     <div class="col-md-9">
                         <div class="input-group">
-                            {!! Form::text('scout_name', old('scout_name', $users->scout_name ?? null), array('id' => 'scout_name', 'class' => 'form-control', 'placeholder' => 'Pfadiname')) !!}
+                            {!! Form::text('scout_name', old('scout_name', $user->scout_name ?? null), array('id' => 'scout_name', 'class' => 'form-control', 'placeholder' => 'Pfadiname')) !!}
                             <div class="input-group-append">
                                 <label class="input-group-text" for="scout_name">
                                     <i class="fa fa-user" aria-hidden="true"></i>

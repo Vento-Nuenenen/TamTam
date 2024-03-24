@@ -16,7 +16,7 @@ class EmergencyNumbersController extends Controller
      */
     public function index(): View|Application|Factory
     {
-        $numbers = EmergencyNumber::all();
+        $numbers = EmergencyNumber::orderBy('order', 'ASC')->get();
 
         return view('numbers.numbers', ['numbers' => $numbers]);
     }
@@ -26,9 +26,7 @@ class EmergencyNumbersController extends Controller
      */
     public function create(): View|Application|Factory
     {
-        $numbers = EmergencyNumber::all();
-
-        return view('numbers.add', ['numbers' => $numbers]);
+        return view('numbers.add');
     }
 
     /**
@@ -36,11 +34,11 @@ class EmergencyNumbersController extends Controller
      */
     public function store(Request $request): RedirectResponse
     {
-        $number_name = $request->input('number_name');
+        $name = $request->input('name');
         $number = $request->input('number');
 
         EmergencyNumber::create([
-            'name' => $number_name,
+            'name' => $name,
             'number' => $number
         ]);
 
@@ -62,11 +60,11 @@ class EmergencyNumbersController extends Controller
      */
     public function update(Request $request, EmergencyNumber $emergencyNumber): RedirectResponse
     {
-        $number_name = $request->input('number_name');
+        $name = $request->input('name');
         $number = $request->input('number');
 
         EmergencyNumber::where('id', '=', $emergencyNumber)->update([
-            'name' => $number_name,
+            'name' => $name,
             'number' => $number
         ]);
 
@@ -81,5 +79,20 @@ class EmergencyNumbersController extends Controller
         EmergencyNumber::where('id', '=', $emergencyNumber)->delete();
 
         return redirect()->back()->with('message', 'Nummer erfolgreich gelöscht.');
+    }
+
+    public function sort(Request $request)
+    {
+        $numbers = EmergencyNumber::all();
+
+        foreach ($numbers as $number) {
+            foreach ($request->order as $order) {
+                if (array_key_exists('id', $order) && $order['id'] == $number->id) {
+                    $number->update(['order' => $order['position']]);
+                }
+            }
+        }
+
+        return response('Update Successful', 200);
     }
 }

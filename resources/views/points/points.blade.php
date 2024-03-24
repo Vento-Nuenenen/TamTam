@@ -40,27 +40,27 @@
                     <th>Punkte</th>
                     </thead>
                     <tbody>
-                    @foreach($participations as $participant)
+                    @foreach($kids as $kid)
                         <tr>
                             <td>
-                                @if($participant->scout_name)
-                                    {{ $participant->first_name }} {{ $participant->last_name }} / {{ $participant->scout_name }}
+                                @if($kid->scout_name)
+                                    {{ $kid->first_name }} {{ $kid->last_name }} / {{ $kid->scout_name }}
                                 @else
-                                    {{ $participant->first_name }} {{ $participant->last_name }}
+                                    {{ $kid->first_name }} {{ $kid->last_name }}
                                 @endif
                             </td>
                             <td>
-                                @if($participant->barcode != null)
-                                    {{ $participant->barcode }}
+                                @if($kid->barcode != null)
+                                    {{ $kid->barcode }}
                                 @endif
                             </td>
                             <td>
-                                @if($participant->current_balance > 0)
-                                    <span class="badge badge-success">{{ $participant->current_balance }}</span>
-                                @elseif($participant->current_balance < 0)
-                                    <span class="badge badge-danger">{{ $participant->current_balance }}</span>
+                                @if($kid->current_balance > 0)
+                                    <span class="badge badge-success">{{ $kid->current_balance }}</span>
+                                @elseif($kid->current_balance < 0)
+                                    <span class="badge badge-danger">{{ $kid->current_balance }}</span>
                                 @else
-                                    <span class="badge badge-secondary">{{ $participant->current_balance }}</span>
+                                    <span class="badge badge-secondary">{{ $kid->current_balance }}</span>
                                 @endif
                             </td>
                         </tr>

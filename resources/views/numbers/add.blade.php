@@ -18,20 +18,20 @@
                 {!! Form::open(array('route' => 'store-numbers', 'method' => 'POST', 'role' => 'form', 'class' => 'needs-validation')) !!}
                 {!! csrf_field() !!}
 
-                <div class="form-group has-feedback row {{ $errors->has('number_name') ? ' has-error ' : '' }}">
-                    {!! Form::label('number_name', 'Nummernbezeichnung', array('class' => 'col-md-3 control-label')); !!}
+                <div class="form-group has-feedback row {{ $errors->has('name') ? ' has-error ' : '' }}">
+                    {!! Form::label('name', 'Bezeichnung', array('class' => 'col-md-3 control-label')); !!}
                     <div class="col-md-9">
                         <div class="input-group">
-                            {!! Form::text('number_name', NULL, array('id' => 'number_name', 'class' => 'form-control', 'placeholder' => 'Nummernbezeichnung', 'required')) !!}
+                            {!! Form::text('name', NULL, array('id' => 'name', 'class' => 'form-control', 'placeholder' => 'Bezeichnung', 'required')) !!}
                             <div class="input-group-append">
-                                <label class="input-group-text" for="group_name">
+                                <label class="input-group-text" for="name">
                                     <i class="fa fa-heart" aria-hidden="true"></i>
                                 </label>
                             </div>
                         </div>
-                        @if ($errors->has('number_name'))
+                        @if ($errors->has('name'))
                             <span class="help-block">
-                                <strong>{{ $errors->first('number_name') }}</strong>
+                                <strong>{{ $errors->first('name') }}</strong>
                             </span>
                         @endif
                     </div>

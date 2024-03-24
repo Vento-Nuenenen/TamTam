@@ -1,4 +1,4 @@
-import jquery from 'jquery';
-window.$ = window.jQuery = jquery;
+import jQuery from 'jquery';
+window.$ = window.jQuery = jQuery;
 
 import 'jquery-ui/ui/widgets/sortable';

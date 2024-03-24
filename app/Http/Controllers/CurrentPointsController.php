@@ -2,8 +2,9 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Participant;
+use App\Models\Kid;
 use App\Models\Points;
+use DB;
 use Illuminate\Http\Request;
 
 class CurrentPointsController extends Controller
@@ -14,28 +15,28 @@ class CurrentPointsController extends Controller
     public function index(Request $request)
     {
         if ($request->input('search') == null) {
-            $participations = DB::select('SELECT participations.*, points.*, GROUP_CONCAT(points.points) AS points,
-				GROUP_CONCAT(points.is_addition) AS additions FROM `participations`
-  			    LEFT JOIN `points` ON `points`.`FK_PRT` = `participations`.`id` GROUP BY participations.id;');
+            $kids = DB::select('SELECT kids.*, points.*, GROUP_CONCAT(points.points) AS points,
+				GROUP_CONCAT(points.is_addition) AS additions FROM `kids`
+  			    LEFT JOIN `points` ON `points`.`FK_KID` = `kids`.`id` GROUP BY kids.id;');
         } else {
             $search_string = $request->input('search');
 
-            $participations = DB::select("SELECT participations.*, points.*, GROUP_CONCAT(points.points) AS points,
-				GROUP_CONCAT(points.is_addition) AS additions FROM `participations`
-  			    LEFT JOIN `points` ON `points`.`FK_PRT` = `participations`.`id`
+            $kids = DB::select("SELECT kids.*, points.*, GROUP_CONCAT(points.points) AS points,
+				GROUP_CONCAT(points.is_addition) AS additions FROM `kids`
+  			    LEFT JOIN `points` ON `points`.`FK_KID` = `kids`.`id`
   			     WHERE scout_name LIKE '%$search_string%'
   			     OR last_name LIKE '%$search_string%'
   			     OR first_name LIKE '%$search_string%'
   			     OR barcode LIKE '%$search_string%'
-  			      GROUP BY participations.id;");
+  			      GROUP BY kids.id;");
         }
 
-        foreach ($participations as $participant) {
+        foreach ($kids as $kid) {
             $balance = 0;
 
-            if (! empty($participant->points) || ! empty($participant->additions)) {
-                $points = explode(',', $participant->points);
-                $additions = explode(',', $participant->additions);
+            if (! empty($kid->points) || ! empty($kid->additions)) {
+                $points = explode(',', $kid->points);
+                $additions = explode(',', $kid->additions);
 
                 for ($i = 0; $i < count($points); $i++) {
                     if ($additions[$i] == 1) {
@@ -46,10 +47,10 @@ class CurrentPointsController extends Controller
                 }
             }
 
-            $participant->current_balance = $balance;
+            $kid->current_balance = $balance;
         }
 
-        return view('points.points', ['participations' => $participations]);
+        return view('points.points', ['kids' => $kids]);
     }
 
     /**
@@ -57,9 +58,9 @@ class CurrentPointsController extends Controller
      */
     public function create()
     {
-        $participations = Participant::all();
+        $kids = Kid::all();
 
-        return view('points.add', ['participations' => $participations]);
+        return view('points.add', ['kids' => $kids]);
     }
 
     /**
@@ -67,7 +68,7 @@ class CurrentPointsController extends Controller
      */
     public function store(Request $request)
     {
-        $participant = $request->input('participant');
+        $kid = $request->input('kid');
         $points = $request->input('points');
         $reason = $request->input('reason');
         $is_addition = ! empty($request->input('is_addition')) ? true : false;
@@ -76,7 +77,7 @@ class CurrentPointsController extends Controller
            'reason' => $reason,
            'points' => $points,
            'is_addition' => $is_addition,
-           'FK_PRT' => $participant
+           'FK_KID' => $kid
         ]);
 
         return redirect()->back()->with('message', 'Transaktion wurde erstellt.');
