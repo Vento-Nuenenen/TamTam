@@ -2,7 +2,7 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Participant;
+use App\Models\Kid;
 use App\Models\Points;
 use Illuminate\Contracts\View\Factory;
 use Illuminate\Contracts\View\View;
@@ -18,12 +18,12 @@ class PointTransactionController extends Controller
     public function index(Request $request): View|Application|Factory
     {
         if ($request->search == null) {
-            $transactions = Points::with('participants')
-                ->select('points.*', 'participations.first_name', 'participations.last_name', 'participations.scout_name', 'participations.barcode')
+            $transactions = Points::with('kids')
+//                ->select('points.*', 'kids.first_name', 'kids.last_name', 'kids.scout_name', 'kids.barcode')
                 ->get();
         } else {
             $search_string = $request->input('search');
-            $transactions = Points::with('participants')
+            $transactions = Points::with('kids')
                 ->where('scout_name', 'LIKE', "%$search_string%")
                 ->orWhere('last_name', 'LIKE', "%$search_string%")
                 ->orWhere('first_name', 'LIKE', "%$search_string%")
@@ -40,9 +40,9 @@ class PointTransactionController extends Controller
      */
     public function create(): View|Application|Factory
     {
-        $participants = Participant::all();
+        $kids = Kid::all();
 
-        return view('transactions.add', ['participants' => $participants]);
+        return view('transactions.add', ['kids' => $kids]);
     }
 
     /**
@@ -72,9 +72,9 @@ class PointTransactionController extends Controller
     public function edit(Points $points): View|Application|Factory
     {
         $point = Points::where('id', '=', $points)->first();
-        $participations = Participant::get();
+        $kids = Kid::get();
 
-        return view('transactions.edit', ['point' => $point, 'participations' => $participations]);
+        return view('transactions.edit', ['point' => $point, 'kids' => $kids]);
     }
 
     /**
@@ -82,16 +82,16 @@ class PointTransactionController extends Controller
      */
     public function update(Request $request, Points $points): RedirectResponse
     {
-        $participant = $request->input('participant');
+        $kid = $request->input('kid');
         $points = $request->input('points');
         $reason = $request->input('reason');
-        $is_addition = ! empty($request->input('is_addition')) ? true : false;
+        $is_addition = ! empty($request->input('is_addition'));
 
         Points::where('id', '=', $points)->update([
             'reason' => $reason,
             'points' => $points,
             'is_addition' => $is_addition,
-            'FK_PRT' => $participant
+            'FK_KID' => $kid
         ]);
 
         return redirect()->back()->with('message', 'Transaktion wurde aktualisiert.');
