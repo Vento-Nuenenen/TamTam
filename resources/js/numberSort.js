@@ -3,7 +3,7 @@ $(function () {
         items: "tr",
         cursor: 'move',
         opacity: 0.6,
-        update: function() {
+        update: function () {
             sendOrderToServer();
         }
     });
@@ -11,10 +11,10 @@ $(function () {
     function sendOrderToServer() {
         var order = [];
         var token = $('meta[name="csrf-token"]').attr('content');
-        $('tr').each(function(index, element) {
+        $('tr').each(function (index, element) {
             order.push({
                 id: $(this).attr('data-id'),
-                position: index+1
+                position: index + 1
             });
         });
 
@@ -26,9 +26,9 @@ $(function () {
                 order: order,
                 _token: token
             },
-            success: function(response) {
+            success: function (response) {
                 alert(response.status);
-                if(response.status == "success") {
+                if (response.status == "success") {
                     console.log(response);
                 } else {
                     console.log(response);
