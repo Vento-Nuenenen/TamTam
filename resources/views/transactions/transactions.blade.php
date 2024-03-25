@@ -26,6 +26,8 @@
             </div>
         </div>
 
+        <br />
+
         <div class="card">
             <div class="card-header">
                 <h5 class="float-left">Transaktionen</h5>
@@ -46,15 +48,15 @@
                     @foreach($transactions as $transaction)
                         <tr class="text-color-{{ $transaction->is_addition == 1 ? 'positiv' : 'negativ' }}">
                             <td>
-                                @if($transaction->scout_name)
-                                    {{ $transaction->scout_name }} / {{ $transaction->first_name }} {{ $transaction->last_name }}
+                                @if($transaction->kid->scout_name)
+                                    {{ $transaction->kid->scout_name }} / {{ $transaction->kid->first_name }} {{ $transaction->kid->last_name }}
                                 @else
-                                    {{ $transaction->first_name }} {{ $transaction->last_name }}
+                                    {{ $transaction->kid->first_name }} {{ $transaction->kid->last_name }}
                                 @endif
                             </td>
                             <td>
-                                @if($transaction->barcode != null)
-                                    {{ $transaction->barcode }}
+                                @if($transaction->kid->barcode != null)
+                                    {{ $transaction->kid->barcode }}
                                 @endif
                             </td>
                             <td>

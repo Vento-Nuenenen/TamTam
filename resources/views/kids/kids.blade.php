@@ -49,13 +49,13 @@
                         <tr>
                             <td>
                                 @if($kid->scout_name)
-                                    {{ $kid->first_name }} {{ $participation->last_name }} / {{ $participation->scout_name }}
+                                    {{ $kid->first_name }} {{ $kid->last_name }} / {{ $kid->scout_name }}
                                 @else
-                                    {{ $kid->first_name }} {{ $participation->last_name }}
+                                    {{ $kid->first_name }} {{ $kid->last_name }}
                                 @endif
                             </td>
                             <td>
-                                {{ $kid->group_name }}
+                                {{ $kid->group->name ?? '' }}
                             </td>
                             <td>
                                 {{ $kid->seat_number }}
@@ -70,8 +70,8 @@
                                 <img width="80px" src="{{ asset('storage/img/' . $kid->person_picture) }}">
                             </td>
                             <td>
-                                <button onclick="location.href='{{ route('edit-kids',$participation->id) }}'" class="btn btn-danger ml-2"><span class="fa fa-edit"></span></button>
-                                <button onclick="location.href='{{ route('destroy-kids',$participation->id) }}'" class="btn btn-danger ml-2"><span class="fa fa-remove"></span></button>
+                                <button onclick="location.href='{{ route('edit-kids',$kid->id) }}'" class="btn btn-danger ml-2"><span class="fa fa-edit"></span></button>
+                                <button onclick="location.href='{{ route('destroy-kids',$kid->id) }}'" class="btn btn-danger ml-2"><span class="fa fa-remove"></span></button>
                             </td>
                         </tr>
                     @endforeach

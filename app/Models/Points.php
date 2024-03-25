@@ -16,8 +16,8 @@ class Points extends Model
         'is_addition',
     ];
 
-    public function participant(): BelongsTo
+    public function kid(): BelongsTo
     {
-        return $this->belongsTo(Participant::class);
+        return $this->belongsTo(Kid::class);
     }
 }

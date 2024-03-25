@@ -21,41 +21,41 @@
                     </form>
 
                     <div class="card-body table-responsive">
-                        @if($tn ?? '')
+                        @if($kids ?? '')
                             <table id="dataTable" class="table table-hover">
                                 <tr>
                                     <th>Barcode: </th>
-                                    <td>{{ $tn->barcode }}</td>
+                                    <td>{{ $kids->barcode }}</td>
                                 </tr>
                                 <tr>
                                     <th>Bestanden: </th>
-                                    <td><span class="badge badge-{{ $tn->course_passed ? 'success' : 'danger' }}">{{ $tn->course_passed ? 'Ja' : 'Nein' }}</span></td>
+                                    <td><span class="badge badge-{{ $kids->course_passed ? 'success' : 'danger' }}">{{ $kids->course_passed ? 'Ja' : 'Nein' }}</span></td>
                                 </tr>
                                 <tr>
                                     <th>Pfadiname: </th>
-                                    <td>{{ isset($tn->scout_name) ? $tn->scout_name : 'K.A.' }}</td>
+                                    <td>{{ isset($kids->scout_name) ? $kids->scout_name : 'K.A.' }}</td>
                                 </tr>
                                 <tr>
                                     <th>Vor- & Nachname: </th>
-                                    <td>{{ $tn->first_name . ' ' . $tn->last_name }}</td>
+                                    <td>{{ $kids->first_name . ' ' . $kids->last_name }}</td>
                                 </tr>
                                 <tr>
                                     <th>Gruppe: </th>
-                                    <td>{{ $tn->group_name }}</td>
+                                    <td>{{ $kids->group_name }}</td>
                                 </tr>
                                 <tr>
                                     <th>Sitzplatz: </th>
-                                    <td>{{ $tn->seat_number }}</td>
+                                    <td>{{ $kids->seat_number }}</td>
                                 </tr>
                                 <tr>
                                     <th>Aktuelle Punkte: </th>
                                     <td>
-                                        @if($tn->current_balance > 0)
-                                            <span class="badge badge-success">{{ $tn->current_balance }}</span>
-                                        @elseif($tn->current_balance < 0)
-                                            <span class="badge badge-danger">{{ $tn->current_balance }}</span>
+                                        @if($kids->current_balance > 0)
+                                            <span class="badge badge-success">{{ $kids->current_balance }}</span>
+                                        @elseif($kids->current_balance < 0)
+                                            <span class="badge badge-danger">{{ $kids->current_balance }}</span>
                                         @else
-                                            <span class="badge badge-secondary">{{ $tn->current_balance }}</span>
+                                            <span class="badge badge-secondary">{{ $kids->current_balance }}</span>
                                         @endif
                                     </td>
                                 </tr>

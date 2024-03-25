@@ -14,10 +14,10 @@ class OverwatchController extends Controller
         if($request->barcode != null) {
             $barcode = $request->barcode;
 
-            $kids = DB::select("SELECT kids.*, points.*, groups.*, GROUP_CONCAT(points.points) AS points,
+            $kids = DB::select("SELECT kids.*, points.*, groups.name as group_name, GROUP_CONCAT(points.points) AS points,
 				GROUP_CONCAT(points.is_addition) AS additions FROM `kids`
-  			    LEFT JOIN `points` ON `points`.`FK_PRT` = `kids`.`id`
-  			    LEFT JOIN `groups` ON `participations`.`FK_GRP` = `groups`.`id` WHERE `kids`.`barcode` LIKE $barcode
+  			    LEFT JOIN `points` ON `points`.`FK_KID` = `kids`.`id`
+  			    LEFT JOIN `groups` ON `kids`.`group_id` = `groups`.`id` WHERE `kids`.`barcode` LIKE $barcode
  				GROUP BY kids.id;");
 
             foreach($kids as $kid) {

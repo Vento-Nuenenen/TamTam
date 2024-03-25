@@ -48,9 +48,9 @@ class EmergencyNumbersController extends Controller
     /**
      * Show the form for editing the specified resource.
      */
-    public function edit(EmergencyNumber $emergencyNumber): View|Application|Factory
+    public function edit($nid): View|Application|Factory
     {
-        $number = EmergencyNumber::where('id', '=', $emergencyNumber)->first();
+        $number = EmergencyNumber::find($nid);
 
         return view('numbers.edit', ['number' => $number]);
     }
@@ -58,12 +58,12 @@ class EmergencyNumbersController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, EmergencyNumber $emergencyNumber): RedirectResponse
+    public function update(Request $request, $nid): RedirectResponse
     {
         $name = $request->input('name');
         $number = $request->input('number');
 
-        EmergencyNumber::where('id', '=', $emergencyNumber)->update([
+        EmergencyNumber::where('id', '=', $nid)->update([
             'name' => $name,
             'number' => $number
         ]);
@@ -74,9 +74,9 @@ class EmergencyNumbersController extends Controller
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(EmergencyNumber $emergencyNumber): RedirectResponse
+    public function destroy($nid): RedirectResponse
     {
-        EmergencyNumber::where('id', '=', $emergencyNumber)->delete();
+        EmergencyNumber::destroy($nid);
 
         return redirect()->back()->with('message', 'Nummer erfolgreich gelöscht.');
     }

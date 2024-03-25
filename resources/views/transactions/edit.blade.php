@@ -28,14 +28,14 @@
                     {!! Form::label('participant', 'Teilnehmer', array('class' => 'col-md-3 control-label')); !!}
                     <div class="col-md-9">
                         <div class="input-group">
-                            <select class="form-control selectpicker" data-style="btn-primary" data-live-search="true" name="participant" id="participant" required>
+                            <select class="form-control" data-style="btn-primary" data-live-search="true" name="participant" id="participant" required>
                                 <option value="">Teilnehmer wählen</option>
-                                @if ($participations)
-                                    @foreach($participations as $participant)
-                                        @if($participant->scout_name)
-                                            <option value="{{ $participant->id }}" {{ ($point->FK_PRT == $participant->id) ? 'selected':'' }} > {{ $participant->first_name }} {{ $participant->last_name }} / {{ $participant->scout_name }} - {{$participant->barcode ?? '' }} </option>
+                                @if ($kids)
+                                    @foreach($kids as $kid)
+                                        @if($kid->scout_name)
+                                            <option value="{{ $kid->id }}" {{ ($point->FK_PRT == $kid->id) ? 'selected':'' }} > {{ $kid->first_name }} {{ $kid->last_name }} / {{ $kid->scout_name }} - {{$kid->barcode ?? '' }} </option>
                                         @else
-                                            <option value="{{ $participant->id }}" {{ ($point->FK_PRT == $participant->id) ? 'selected':'' }} > {{ $participant->first_name }} {{ $participant->last_name }} - {{$participant->barcode ?? '' }} </option>
+                                            <option value="{{ $kid->id }}" {{ ($point->FK_PRT == $kid->id) ? 'selected':'' }} > {{ $kid->first_name }} {{ $kid->last_name }} - {{$kid->barcode ?? '' }} </option>
                                         @endif
                                     @endforeach
                                 @endif
@@ -93,7 +93,7 @@
                 </div>
 
                 <div class="form-group has-feedback row {{ $errors->has('is_addition') ? ' has-error ' : '' }}">
-                    {!! Form::label('is_addition', 'Transaktionstyp', array('class' => 'col-md-3 control-label')); !!}
+                    {!! Form::label('is_addition', 'Punkte hinzufügen? (sonst abziehen)', array('class' => 'col-md-3 control-label')); !!}
                     <div class="col-md-9">
                         <div class="input-group">
                             <div class="input-group">

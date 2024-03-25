@@ -16,7 +16,7 @@ return new class extends Migration
             $table->string('reason')->nullable();
             $table->integer('points');
             $table->boolean('is_addition');
-            $table->foreignId('FK_KID');
+            $table->foreignId('kid_id');
             $table->timestamps();
         });
     }

@@ -5,6 +5,10 @@ namespace App\Http\Controllers;
 use App\Helpers\Barcode;
 use App\Models\Group;
 use App\Models\Kid;
+use Illuminate\Contracts\View\Factory;
+use Illuminate\Contracts\View\View;
+use Illuminate\Foundation\Application;
+use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 
 class KidsController extends Controller
@@ -12,13 +16,13 @@ class KidsController extends Controller
     /**
      * Display a listing of the resource.
      */
-    public function index(Request $request)
+    public function index(Request $request): View|Application|Factory
     {
         if($request->input('search') == null) {
-            $kids = Kid::all();
+            $kids = Kid::with(['group'])->get();
         } else {
             $search_string = $request->input('search');
-            $kids = Kid::leftJoin('groups', 'groups.id', '=', 'kids.FK_GID')
+            $kids = Kid::with(['group'])
                 ->select('kids.*', 'groups.group_name')
                 ->where('scout_name', 'LIKE', "%$search_string%")
                 ->orWhere('last_name', 'LIKE', "%$search_string%")
@@ -33,7 +37,7 @@ class KidsController extends Controller
     /**
      * Show the form for creating a new resource.
      */
-    public function create()
+    public function create(): View|Application|Factory
     {
         $groups = Group::all();
 
@@ -88,7 +92,7 @@ class KidsController extends Controller
             'birthday' => $birthday,
             'gender' => $gender,
             'group_id' => $group,
-            'person_picture' => $img_name,
+            'image' => $img_name,
         ]);
 
         return redirect()->back()->with('message', 'Teilnehmer wurde erstellt.');
@@ -97,24 +101,75 @@ class KidsController extends Controller
     /**
      * Show the form for editing the specified resource.
      */
-    public function edit(Kid $kid)
+    public function edit($kid)
     {
-        //
+        $kid = Kid::find($kid);
+        $groups = Group::all();
+
+        return view('kids.edit', ['kid' => $kid, 'groups' => $groups]);
     }
 
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, Kid $kid)
+    public function update(Request $request, $kid): RedirectResponse
     {
-        //
+        $scout_name = $request->input('scout_name');
+        $first_name = $request->input('first_name');
+        $last_name = $request->input('last_name');
+        $address = $request->input('address');
+        $plz = $request->input('plz');
+        $place = $request->input('place');
+        $birthday = $request->input('birthday');
+        $gender = $request->input('gender');
+        $group = $request->input('group');
+        $barcode = $request->input('barcode');
+
+        if($request->file('tn_img')) {
+            $img_name = 'tnimg_'.time().'.'.$request->file('tn_img')->extension();
+            $request->file('tn_img')->move(storage_path('app/public/img'), $img_name);
+        } else {
+            $img_name = null;
+        }
+
+        if($gender) {
+            if($gender == 'm') {
+                $gender = 'Männlich';
+            } elseif($gender == 'w') {
+                $gender = 'Weiblich';
+            } elseif($gender == 'd') {
+                $gender = 'Anderes';
+            } else {
+                $gender = null;
+            }
+        } else {
+            $gender = null;
+        }
+
+        Kid::find($kid)->update([
+            'scout_name' => $scout_name,
+            'first_name' => $first_name,
+            'last_name' => $last_name,
+            'barcode' => $barcode,
+            'address' => $address,
+            'plz' => $plz,
+            'place' => $place,
+            'birthday' => $birthday,
+            'gender' => $gender,
+            'group_id' => $group,
+            'image' => $img_name,
+        ]);
+
+        return redirect()->back()->with('message', 'Teilnehmer wurde aktualisiert.');
     }
 
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(Kid $kid)
+    public function destroy($kid): RedirectResponse
     {
-        //
+        Kid::destroy($kid);
+
+        return redirect()->back()->with('message', 'TN erfolgreich gelöscht.');
     }
 }
