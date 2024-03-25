@@ -45,8 +45,8 @@ class GroupsController extends Controller
         }
 
         Group::create([
-            'group_name' => $group_name,
-            'logo_file_name' => $logo_name
+            'name' => $group_name,
+            'image' => $logo_name
         ]);
 
         return redirect()->back()->with('message', 'Gruppe wurde erstellt.');
@@ -55,17 +55,17 @@ class GroupsController extends Controller
     /**
      * Show the form for editing the specified resource.
      */
-    public function edit(Group $group)
+    public function edit($gid)
     {
-        $groups = Group::where('id', '=', $group)->first();
+        $group = Group::find($gid);
 
-        return view('groups.edit', ['groups' => $groups]);
+        return view('groups.edit', ['group' => $group]);
     }
 
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, Group $group)
+    public function update(Request $request, $gid)
     {
         $group_name = $request->input('group_name');
 
@@ -76,11 +76,11 @@ class GroupsController extends Controller
             $logo_name = null;
         }
 
-        $group = Group::find($group);
-        $group->group_name = $group_name;
+        $group = Group::find($gid);
+        $group->name = $group_name;
 
         if($logo_name != null){
-            $group->logo_file_name = $logo_name;
+            $group->image = $logo_name;
         }
 
         $group->save();
@@ -91,9 +91,9 @@ class GroupsController extends Controller
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(Group $group)
+    public function destroy($gid)
     {
-        Group::where('id', '=', $group)->delete();
+        Group::destroy($gid);
 
         return redirect()->back()->with('message', 'Gruppe erfolgreich gelöscht.');
     }

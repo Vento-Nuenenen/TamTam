@@ -3,7 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Group;
-use App\Models\Participant;
+use App\Models\Kid;
 use DB;
 use Illuminate\Http\Request;
 
@@ -14,18 +14,18 @@ class OverwatchController extends Controller
         if($request->barcode != null) {
             $barcode = $request->barcode;
 
-            $tns = DB::select("SELECT participations.*, points.*, groups.*, GROUP_CONCAT(points.points) AS points,
-				GROUP_CONCAT(points.is_addition) AS additions FROM `participations`
-  			    LEFT JOIN `points` ON `points`.`FK_PRT` = `participations`.`id`
-  			    LEFT JOIN `groups` ON `participations`.`FK_GRP` = `groups`.`id` WHERE `participations`.`barcode` LIKE $barcode
- 				GROUP BY participations.id;");
+            $kids = DB::select("SELECT kids.*, points.*, groups.name as group_name, GROUP_CONCAT(points.points) AS points,
+				GROUP_CONCAT(points.is_addition) AS additions FROM `kids`
+  			    LEFT JOIN `points` ON `points`.`FK_KID` = `kids`.`id`
+  			    LEFT JOIN `groups` ON `kids`.`group_id` = `groups`.`id` WHERE `kids`.`barcode` LIKE $barcode
+ 				GROUP BY kids.id;");
 
-            foreach($tns as $tn) {
+            foreach($kids as $kid) {
                 $balance = 0;
 
-                if(!empty($tn->points) || !empty($tn->additions)) {
-                    $points = explode(',', $tn->points);
-                    $additions = explode(',', $tn->additions);
+                if(!empty($kid->points) || !empty($kid->additions)) {
+                    $points = explode(',', $kid->points);
+                    $additions = explode(',', $kid->additions);
 
                     for($i = 0; $i < count($points); $i++) {
                         if ($additions[$i] == 1) {
@@ -36,20 +36,20 @@ class OverwatchController extends Controller
                     }
                 }
 
-                $tn->current_balance = $balance;
+                $kid->current_balance = $balance;
             }
 
-            $tns = $tns[0] ?? null;
+            $kids = $kids[0] ?? null;
 
-            return view('overwatch.overwatch', ['tn' => $tns]);
+            return view('overwatch.overwatch', ['kids' => $kids]);
         } else if($request->tableorder != null) {
-            $participants = Participant::inRandomOrder()->get();
+            $kids = Kid::inRandomOrder()->get();
 
             $j = 0;
 
-            foreach ($participants as $user) {
+            foreach ($kids as $kid) {
                 $j++;
-                Participant::where('id', '=', $user->id)->update([
+                Kid::where('id', '=', $kid->id)->update([
                     'seat_number' => $j
                 ]);
             }
@@ -60,16 +60,16 @@ class OverwatchController extends Controller
         } else if($request->grouping != null) {
             $groups = Group::all();
             $groups_count = count($groups);
-            $users = Participant::inRandomOrder()->get();
+            $kids = Kid::inRandomOrder()->get();
             $j = 1;
 
-            foreach($users as $user) {
+            foreach($kids as $kid) {
                 if ($j <= $groups_count) {
-                    Participant::where('id', '=', $user->id)->update(['FK_GRP' => $j]);
+                    Kid::where('id', '=', $kid->id)->update(['FK_GRP' => $j]);
                     $j++;
                 } else {
                     $j = 1;
-                    Participant::where('id', '=', $user->id)->update(['FK_GRP' => $j]);
+                    Kid::where('id', '=', $kid->id)->update(['FK_GRP' => $j]);
                     $j++;
                 }
             }

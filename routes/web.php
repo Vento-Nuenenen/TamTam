@@ -38,9 +38,9 @@ Route::group(['middleware' => ['auth']], function () {
     Route::get('/kids/add', [KidsController::class, 'create'])->name('add-kids');
     Route::post('/kids/store', [KidsController::class, 'store'])->name('store-kids');
     Route::post('kids/import', [KidsController::class, 'import'])->name('import-kids');
-    Route::get('/kids/edit/{pid}', [KidsController::class, 'edit'])->name('edit-kids');
-    Route::post('/kids/update/{pid}', [KidsController::class, 'update'])->name('update-kids');
-    Route::get('/kids/destroy/{pid}', [KidsController::class, 'destroy'])->name('destroy-kids');
+    Route::get('/kids/edit/{kid}', [KidsController::class, 'edit'])->name('edit-kids');
+    Route::post('/kids/update/{kid}', [KidsController::class, 'update'])->name('update-kids');
+    Route::get('/kids/destroy/{kid}', [KidsController::class, 'destroy'])->name('destroy-kids');
 
     Route::any('/users', [UsersController::class, 'index'])->name('users');
     Route::get('/users/add', [UsersController::class, 'create'])->name('add-users');

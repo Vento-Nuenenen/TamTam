@@ -18,17 +18,17 @@
             <div class="card-header">
                 <h5 class="float-left">Teilnehmer bearbeiten</h5>
 
-                <a href="{{  route('participations') }}" class="float-right">Zurück zu TNs</a>
+                <a href="{{  route('kids') }}" class="float-right">Zurück zu TNs</a>
             </div>
             <div class="card-body">
-                {!! Form::open(array('route' => ['update-participations',$participations->id], 'method' => 'POST', 'role' => 'form', 'class' => 'needs-validation', 'enctype' => "multipart/form-data")) !!}
+                {!! Form::open(array('route' => ['update-kids',$kid->id], 'method' => 'POST', 'role' => 'form', 'class' => 'needs-validation', 'enctype' => "multipart/form-data")) !!}
                 {!! csrf_field() !!}
 
                 <div class="form-group has-feedback row {{ $errors->has('scout_name') ? ' has-error ' : '' }}">
                     {!! Form::label('scout_name', 'Pfadiname', array('class' => 'col-md-3 control-label')); !!}
                     <div class="col-md-9">
                         <div class="input-group">
-                            {!! Form::text('scout_name', old('scut_name', $participations->scout_name ?? null), array('id' => 'scout_name', 'class' => 'form-control', 'placeholder' => 'Pfadiname')) !!}
+                            {!! Form::text('scout_name', old('scout_name', $kid->scout_name ?? null), array('id' => 'scout_name', 'class' => 'form-control', 'placeholder' => 'Pfadiname')) !!}
                             <div class="input-group-append">
                                 <label class="input-group-text" for="scout_name">
                                     <i class="fa fa-user" aria-hidden="true"></i>
@@ -47,7 +47,7 @@
                     {!! Form::label('first_name', 'Vorname', array('class' => 'col-md-3 control-label')); !!}
                     <div class="col-md-9">
                         <div class="input-group">
-                            {!! Form::text('first_name', old('first_name',$participations->first_name ?? null), array('id' => 'first_name', 'class' => 'form-control', 'placeholder' => 'Vorname', 'required')) !!}
+                            {!! Form::text('first_name', old('first_name',$kid->first_name ?? null), array('id' => 'first_name', 'class' => 'form-control', 'placeholder' => 'Vorname', 'required')) !!}
                             <div class="input-group-append">
                                 <label class="input-group-text" for="first_name">
                                     <i class="fa fa-user" aria-hidden="true"></i>
@@ -66,7 +66,7 @@
                     {!! Form::label('last_name', 'Nachname', array('class' => 'col-md-3 control-label')); !!}
                     <div class="col-md-9">
                         <div class="input-group">
-                            {!! Form::text('last_name', old('last_name',$participations->last_name ?? null), array('id' => 'last_name', 'class' => 'form-control', 'placeholder' => 'Nachname', 'required')) !!}
+                            {!! Form::text('last_name', old('last_name',$kid->last_name ?? null), array('id' => 'last_name', 'class' => 'form-control', 'placeholder' => 'Nachname', 'required')) !!}
                             <div class="input-group-append">
                                 <label class="input-group-text" for="last_name">
                                     <i class="fa fa-user" aria-hidden="true"></i>
@@ -87,7 +87,7 @@
                     {!! Form::label('address', 'Adresse', array('class' => 'col-md-3 control-label')); !!}
                     <div class="col-md-9">
                         <div class="input-group">
-                            {!! Form::text('address', old('address', $participations->address ?? null), array('id' => 'address', 'class' => 'form-control', 'placeholder' => 'Adresse', 'required')) !!}
+                            {!! Form::text('address', old('address', $kid->address ?? null), array('id' => 'address', 'class' => 'form-control', 'placeholder' => 'Adresse', 'required')) !!}
                             <div class="input-group-append">
                                 <label class="input-group-text" for="last_name">
                                     <i class="fa fa-address-book" aria-hidden="true"></i>
@@ -106,7 +106,7 @@
                     {!! Form::label('plz', 'Postleitzahl', array('class' => 'col-md-3 control-label')); !!}
                     <div class="col-md-9">
                         <div class="input-group">
-                            {!! Form::text('plz', old('plz',$participations->plz ?? null), array('id' => 'plz', 'class' => 'form-control', 'placeholder' => 'Postleitzahl', 'required')) !!}
+                            {!! Form::text('plz', old('plz',$kid->plz ?? null), array('id' => 'plz', 'class' => 'form-control', 'placeholder' => 'Postleitzahl', 'required')) !!}
                             <div class="input-group-append">
                                 <label class="input-group-text" for="last_name">
                                     <i class="fa fa-address-book" aria-hidden="true"></i>
@@ -125,7 +125,7 @@
                     {!! Form::label('place', 'Ort', array('class' => 'col-md-3 control-label')); !!}
                     <div class="col-md-9">
                         <div class="input-group">
-                            {!! Form::text('place', old('place',$participations->place ?? null), array('id' => 'place', 'class' => 'form-control', 'placeholder' => 'Ort', 'required')) !!}
+                            {!! Form::text('place', old('place',$kid->place ?? null), array('id' => 'place', 'class' => 'form-control', 'placeholder' => 'Ort', 'required')) !!}
                             <div class="input-group-append">
                                 <label class="input-group-text" for="last_name">
                                     <i class="fa fa-address-book" aria-hidden="true"></i>
@@ -146,7 +146,7 @@
                     {!! Form::label('birthday', 'Geburtsdatum', array('class' => 'col-md-3 control-label')); !!}
                     <div class="col-md-9">
                         <div class="input-group">
-                            {!! Form::date('birthday', old('birthday',$participations->birthday ?? null), array('id' => 'birthday', 'class' => 'form-control', 'placeholder' => 'Geburtsdatum', 'required')) !!}
+                            {!! Form::date('birthday', old('birthday',$kid->birthday ?? null), array('id' => 'birthday', 'class' => 'form-control', 'placeholder' => 'Geburtsdatum', 'required')) !!}
                             <div class="input-group-append">
                                 <label class="input-group-text" for="last_name">
                                     <i class="fa fa-calendar" aria-hidden="true"></i>
@@ -167,7 +167,7 @@
                     {!! Form::label('barcode', 'EAN Code', array('class' => 'col-md-3 control-label')); !!}
                     <div class="col-md-9">
                         <div class="input-group">
-                            {!! Form::text('barcode', old('barcode',$participations->barcode ?? null), array('id' => 'barcode', 'class' => 'form-control', 'placeholder' => 'EAN Code')) !!}
+                            {!! Form::text('barcode', old('barcode',$kid->barcode ?? null), array('id' => 'barcode', 'class' => 'form-control', 'placeholder' => 'EAN Code')) !!}
                             <div class="input-group-append">
                                 <label class="input-group-text" for="last_name">
                                     <i class="fa fa-barcode" aria-hidden="true"></i>
@@ -188,11 +188,11 @@
                     {!! Form::label('gender', 'Geschlecht', array('class' => 'col-md-3 control-label', 'required')); !!}
                     <div class="col-md-9">
                         <div class="input-group">
-                            <select class="form-control selectpicker" data-style="btn-primary" name="gender" id="gender">
+                            <select class="form-control" data-style="btn-primary" name="gender" id="gender">
                                 <option value="">Geschlecht wählen</option>
-                                <option value="m" {{($participations->gender == 'Männlich') ? 'selected':''}}>Männlich</option>
-                                <option value="w" {{($participations->gender == 'Weiblich') ? 'selected':''}}>Weiblich</option>
-                                <option value="d" {{($participations->gender == 'Anderes') ? 'selected':''}}>Anderes</option>
+                                <option value="m" {{($kid->gender == 'Männlich') ? 'selected':''}}>Männlich</option>
+                                <option value="w" {{($kid->gender == 'Weiblich') ? 'selected':''}}>Weiblich</option>
+                                <option value="d" {{($kid->gender == 'Anderes') ? 'selected':''}}>Anderes</option>
                             </select>
                             <div class="input-group-append">
                                 <label class="input-group-text" for="group">
@@ -214,11 +214,11 @@
                     {!! Form::label('group', 'Gruppe', array('class' => 'col-md-3 control-label', 'required')); !!}
                     <div class="col-md-9">
                         <div class="input-group">
-                            <select class="form-control selectpicker" data-style="btn-primary" name="group" id="group">
+                            <select class="form-control" data-style="btn-primary" name="group" id="group">
                                 <option value="">Gruppe wählen</option>
                                 @if ($groups)
                                     @foreach($groups as $group)
-                                        <option value="{{ $group->id }}" {{($participations->FK_GRP == $group->id) ? 'selected':''}}>{{ $group->group_name }}</option>
+                                        <option value="{{ $group->id }}" {{($kid->FK_GRP == $group->id) ? 'selected':''}}>{{ $group->name }}</option>
                                     @endforeach
                                 @endif
                             </select>

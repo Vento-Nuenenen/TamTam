@@ -11,7 +11,6 @@ class Kid extends Model
 {
     use HasFactory;
 
-
     protected $fillable = [
         'scout_name',
         'first_name',

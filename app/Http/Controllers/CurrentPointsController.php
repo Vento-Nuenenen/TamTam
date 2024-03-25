@@ -17,13 +17,13 @@ class CurrentPointsController extends Controller
         if ($request->input('search') == null) {
             $kids = DB::select('SELECT kids.*, points.*, GROUP_CONCAT(points.points) AS points,
 				GROUP_CONCAT(points.is_addition) AS additions FROM `kids`
-  			    LEFT JOIN `points` ON `points`.`FK_KID` = `kids`.`id` GROUP BY kids.id;');
+  			    LEFT JOIN `points` ON `points`.`kid_id` = `kids`.`id` GROUP BY kids.id;');
         } else {
             $search_string = $request->input('search');
 
             $kids = DB::select("SELECT kids.*, points.*, GROUP_CONCAT(points.points) AS points,
 				GROUP_CONCAT(points.is_addition) AS additions FROM `kids`
-  			    LEFT JOIN `points` ON `points`.`FK_KID` = `kids`.`id`
+  			    LEFT JOIN `points` ON `points`.`kid_id` = `kids`.`id`
   			     WHERE scout_name LIKE '%$search_string%'
   			     OR last_name LIKE '%$search_string%'
   			     OR first_name LIKE '%$search_string%'

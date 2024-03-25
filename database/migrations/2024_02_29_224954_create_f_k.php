@@ -16,7 +16,7 @@ return new class extends Migration
         });
 
         Schema::table('points', function (Blueprint $table) {
-            $table->foreign('FK_KID')->references('id')->on('kids')->onDelete('cascade');
+            $table->foreign('kid_id')->references('id')->on('kids')->onDelete('cascade');
         });
 
         Schema::table('carts', function (Blueprint $table) {

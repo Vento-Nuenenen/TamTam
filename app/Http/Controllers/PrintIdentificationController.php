@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Helpers\Helpers;
 use App\Models\EmergencyNumber;
+use App\Models\Kid;
 use Illuminate\Contracts\Foundation\Application;
 use Illuminate\Contracts\Routing\ResponseFactory;
 use Illuminate\Contracts\View\Factory;
@@ -31,11 +32,11 @@ class PrintIdentificationController extends Controller
             'text' => true,
         ];
 
-        $persons = DB::table('participations')
-            ->leftJoin('groups', 'participations.FK_GRP', 'groups.id')->get();
+        $kids = Kid::with(['group'])->get();
+
         $numbers = EmergencyNumber::orderBy('order', 'ASC')->get();
 
-        $countpages = ceil(count($persons) / 6);
+        $countpages = ceil(count($kids) / 6);
         $personindex = 0;
 
         PDF::SetTitle(config('app.name').' - Identifikationen');
@@ -59,27 +60,27 @@ class PrintIdentificationController extends Controller
             PDF::Line($width * 0.5, 0, $width * 0.5, $height);
 
             //### Card 1
-            if ($personindex <= count($persons)) {
-                $birthday = Helpers::calc_birthday($persons, $personindex);
+            if ($personindex <= count($kids)) {
+                $birthday = Helpers::calc_birthday($kids, $personindex);
 
                 PDF::SetXY(5, 5);
-                ! empty($persons[$personindex]->scout_name) ? PDF::Cell(0, 0, $persons[$personindex]->scout_name, '', 0, 'L') : PDF::Cell(0, 0, '-', '', 0, 'L');
+                ! empty($kids[$personindex]->scout_name) ? PDF::Cell(0, 0, $kids[$personindex]->scout_name, '', 0, 'L') : PDF::Cell(0, 0, '-', '', 0, 'L');
                 PDF::Ln(5);
-                ! empty($persons[$personindex]->first_name) && ! empty($persons[$personindex]->last_name) ? PDF::Cell(0, 0, $persons[$personindex]->first_name.' '.$persons[$personindex]->last_name, '', 0, 'L') : PDF::Cell(0, 0, 'Kein Vor & Nachname gefunden', '', 0, 'L');
+                ! empty($kids[$personindex]->first_name) && ! empty($kids[$personindex]->last_name) ? PDF::Cell(0, 0, $kids[$personindex]->first_name.' '.$kids[$personindex]->last_name, '', 0, 'L') : PDF::Cell(0, 0, 'Kein Vor & Nachname gefunden', '', 0, 'L');
                 PDF::Ln(10);
-                ! empty($persons[$personindex]->address) ? PDF::Cell(0, 0, $persons[$personindex]->address, '', 0, 'L') : PDF::Cell(0, 0, 'Keine Adresse gefunden', '', 0, 'L');
+                ! empty($kids[$personindex]->address) ? PDF::Cell(0, 0, $kids[$personindex]->address, '', 0, 'L') : PDF::Cell(0, 0, 'Keine Adresse gefunden', '', 0, 'L');
                 PDF::Ln(5);
-                ! empty($persons[$personindex]->plz) && ! empty($persons[$personindex]->place) ? PDF::Cell(0, 0, $persons[$personindex]->plz.' '.$persons[$personindex]->place, '', 0, 'L') : PDF::Cell(0, 0, 'Kein PLZ & Ort gefunden', '', 0, 'L');
+                ! empty($kids[$personindex]->plz) && ! empty($kids[$personindex]->place) ? PDF::Cell(0, 0, $kids[$personindex]->plz.' '.$kids[$personindex]->place, '', 0, 'L') : PDF::Cell(0, 0, 'Kein PLZ & Ort gefunden', '', 0, 'L');
                 PDF::Ln(10);
                 ! empty($birthday) ? PDF::Cell(0, 0, $birthday, '', 0, 'L') : PDF::Cell(0, 0, 'Kein Geburtstag gefunden', '', 0, 'L');
                 PDF::Ln(10);
-                ! empty($persons[$personindex]->gender) ? PDF::Cell(0, 0, $persons[$personindex]->gender, '', 0, 'L') : PDF::Cell(0, 0, 'Kein Geschlecht gefunden', '', 0, 'L');
+                ! empty($kids[$personindex]->gender) ? PDF::Cell(0, 0, $kids[$personindex]->gender, '', 0, 'L') : PDF::Cell(0, 0, 'Kein Geschlecht gefunden', '', 0, 'L');
                 PDF::SetXY(60, 5);
-                ! empty($persons[$personindex]->person_picture) ? PDF::Image(storage_path('/app/public/img/'.$persons[$personindex]->person_picture), 65, 5, 30) : PDF::Cell(0, 0, ' ', '', 0, 'L');
+                ! empty($kids[$personindex]->person_picture) ? PDF::Image(storage_path('/app/public/img/'.$kids[$personindex]->person_picture), 65, 5, 30) : PDF::Cell(0, 0, ' ', '', 0, 'L');
                 PDF::SetXY(60, 15);
-                ! empty($persons[$personindex]->barcode) ? PDF::write1DBarcode($persons[$personindex]->barcode, 'EAN13', '', 40, '', 10, 0.4, $style, 'L') : PDF::Cell(0, 0, 'Kein Barcode gefunden', '', 0, 'L');
+                ! empty($kids[$personindex]->barcode) ? PDF::write1DBarcode($kids[$personindex]->barcode, 'EAN13', '', 40, '', 10, 0.4, $style, 'L') : PDF::Cell(0, 0, 'Kein Barcode gefunden', '', 0, 'L');
                 PDF::SetXY(30, 70);
-                ! empty($persons[$personindex]->logo_file_name) ? PDF::Image(storage_path('/app/public/img/'.$persons[$personindex]->logo_file_name), 30, 60, 45) : PDF::Cell(0, 0, 'Kein Gruppen-Logo gefunden', '', 0, 'L');
+                ! empty($kids[$personindex]->logo_file_name) ? PDF::Image(storage_path('/app/public/img/'.$kids[$personindex]->logo_file_name), 30, 60, 45) : PDF::Cell(0, 0, 'Kein Gruppen-Logo gefunden', '', 0, 'L');
             }
             $personindex++;
 
@@ -87,26 +88,26 @@ class PrintIdentificationController extends Controller
             PDF::SetMargins(110, 5, 5, true);
             PDF::SetXY(110, 5);
 
-            if ($personindex < count($persons)) {
-                $birthday = Helpers::calc_birthday($persons, $personindex);
+            if ($personindex < count($kids)) {
+                $birthday = Helpers::calc_birthday($kids, $personindex);
 
-                ! empty($persons[$personindex]->scout_name) ? PDF::Cell(110, 0, $persons[$personindex]->scout_name, '', 0, 'L') : PDF::Cell(0, 0, 'Kein Pfadiname gefunden', '', 0, 'L');
+                ! empty($kids[$personindex]->scout_name) ? PDF::Cell(110, 0, $kids[$personindex]->scout_name, '', 0, 'L') : PDF::Cell(0, 0, 'Kein Pfadiname gefunden', '', 0, 'L');
                 PDF::Ln(5);
-                ! empty($persons[$personindex]->first_name) && ! empty($persons[$personindex]->last_name) ? PDF::Cell(110, 0, $persons[$personindex]->first_name.' '.$persons[$personindex]->last_name, '', 0, 'L') : PDF::Cell(0, 0, 'Kein Vor & Nachname gefunden', '', 0, 'L');
+                ! empty($kids[$personindex]->first_name) && ! empty($kids[$personindex]->last_name) ? PDF::Cell(110, 0, $kids[$personindex]->first_name.' '.$kids[$personindex]->last_name, '', 0, 'L') : PDF::Cell(0, 0, 'Kein Vor & Nachname gefunden', '', 0, 'L');
                 PDF::Ln(10);
-                ! empty($persons[$personindex]->address) ? PDF::Cell(0, 0, $persons[$personindex]->address, '', 0, 'L') : PDF::Cell(0, 0, 'Keine Adresse gefunden', '', 0, 'L');
+                ! empty($kids[$personindex]->address) ? PDF::Cell(0, 0, $kids[$personindex]->address, '', 0, 'L') : PDF::Cell(0, 0, 'Keine Adresse gefunden', '', 0, 'L');
                 PDF::Ln(5);
-                ! empty($persons[$personindex]->plz) && ! empty($persons[$personindex]->place) ? PDF::Cell(0, 0, $persons[$personindex]->plz.' '.$persons[$personindex]->place, '', 0, 'L') : PDF::Cell(0, 0, 'Kein PLZ & Ort gefunden', '', 0, 'L');
+                ! empty($kids[$personindex]->plz) && ! empty($kids[$personindex]->place) ? PDF::Cell(0, 0, $kids[$personindex]->plz.' '.$kids[$personindex]->place, '', 0, 'L') : PDF::Cell(0, 0, 'Kein PLZ & Ort gefunden', '', 0, 'L');
                 PDF::Ln(10);
                 ! empty($birthday) ? PDF::Cell(0, 0, $birthday, '', 0, 'L') : PDF::Cell(0, 0, 'Kein Geburtstag gefunden', '', 0, 'L');
                 PDF::Ln(10);
-                ! empty($persons[$personindex]->gender) ? PDF::Cell(0, 0, $persons[$personindex]->gender, '', 0, 'L') : PDF::Cell(0, 0, 'Kein Geschlecht gefunden', '', 0, 'L');
+                ! empty($kids[$personindex]->gender) ? PDF::Cell(0, 0, $kids[$personindex]->gender, '', 0, 'L') : PDF::Cell(0, 0, 'Kein Geschlecht gefunden', '', 0, 'L');
                 PDF::SetXY(165, 5);
-                ! empty($persons[$personindex]->person_picture) ? PDF::Image(storage_path('/app/public/img/'.$persons[$personindex]->person_picture), 170, 5, 30) : PDF::Cell(0, 0, ' ', '', 0, 'L');
+                ! empty($kids[$personindex]->person_picture) ? PDF::Image(storage_path('/app/public/img/'.$kids[$personindex]->person_picture), 170, 5, 30) : PDF::Cell(0, 0, ' ', '', 0, 'L');
                 PDF::SetXY(165, 15);
-                ! empty($persons[$personindex]->barcode) ? PDF::write1DBarcode($persons[$personindex]->barcode, 'EAN13', '', 40, '', 10, 0.4, $style, 'L') : PDF::Cell(0, 0, 'Kein Barcode gefunden', '', 0, 'L');
+                ! empty($kids[$personindex]->barcode) ? PDF::write1DBarcode($kids[$personindex]->barcode, 'EAN13', '', 40, '', 10, 0.4, $style, 'L') : PDF::Cell(0, 0, 'Kein Barcode gefunden', '', 0, 'L');
                 PDF::SetXY(135, 70);
-                ! empty($persons[$personindex]->logo_file_name) ? PDF::Image(storage_path('/app/public/img/'.$persons[$personindex]->logo_file_name), 140, 60, 45) : PDF::Cell(0, 0, 'Kein Gruppen-Logo gefunden', '', 0, 'L');
+                ! empty($kids[$personindex]->logo_file_name) ? PDF::Image(storage_path('/app/public/img/'.$kids[$personindex]->logo_file_name), 140, 60, 45) : PDF::Cell(0, 0, 'Kein Gruppen-Logo gefunden', '', 0, 'L');
             }
 
             $personindex++;
@@ -115,26 +116,26 @@ class PrintIdentificationController extends Controller
             PDF::SetMargins(5, 5, 5, true);
             PDF::SetXY(5, 105);
 
-            if ($personindex < count($persons)) {
-                $birthday = Helpers::calc_birthday($persons, $personindex);
+            if ($personindex < count($kids)) {
+                $birthday = Helpers::calc_birthday($kids, $personindex);
 
-                ! empty($persons[$personindex]->scout_name) ? PDF::Cell(0, 0, $persons[$personindex]->scout_name, '', 0, 'L') : PDF::Cell(0, 0, 'Kein Pfadiname gefunden', '', 0, 'L');
+                ! empty($kids[$personindex]->scout_name) ? PDF::Cell(0, 0, $kids[$personindex]->scout_name, '', 0, 'L') : PDF::Cell(0, 0, 'Kein Pfadiname gefunden', '', 0, 'L');
                 PDF::Ln(5);
-                ! empty($persons[$personindex]->first_name) && ! empty($persons[$personindex]->last_name) ? PDF::Cell(0, 0, $persons[$personindex]->first_name.' '.$persons[$personindex]->last_name, '', 0, 'L') : PDF::Cell(0, 0, 'Kein Vor & Nachname gefunden', '', 0, 'L');
+                ! empty($kids[$personindex]->first_name) && ! empty($kids[$personindex]->last_name) ? PDF::Cell(0, 0, $kids[$personindex]->first_name.' '.$kids[$personindex]->last_name, '', 0, 'L') : PDF::Cell(0, 0, 'Kein Vor & Nachname gefunden', '', 0, 'L');
                 PDF::Ln(10);
-                ! empty($persons[$personindex]->address) ? PDF::Cell(0, 0, $persons[$personindex]->address, '', 0, 'L') : PDF::Cell(0, 0, 'Keine Adresse gefunden', '', 0, 'L');
+                ! empty($kids[$personindex]->address) ? PDF::Cell(0, 0, $kids[$personindex]->address, '', 0, 'L') : PDF::Cell(0, 0, 'Keine Adresse gefunden', '', 0, 'L');
                 PDF::Ln(5);
-                ! empty($persons[$personindex]->plz) && ! empty($persons[$personindex]->place) ? PDF::Cell(0, 0, $persons[$personindex]->plz.' '.$persons[$personindex]->place, '', 0, 'L') : PDF::Cell(0, 0, 'Kein PLZ & Ort gefunden', '', 0, 'L');
+                ! empty($kids[$personindex]->plz) && ! empty($kids[$personindex]->place) ? PDF::Cell(0, 0, $kids[$personindex]->plz.' '.$kids[$personindex]->place, '', 0, 'L') : PDF::Cell(0, 0, 'Kein PLZ & Ort gefunden', '', 0, 'L');
                 PDF::Ln(10);
                 ! empty($birthday) ? PDF::Cell(0, 0, $birthday, '', 0, 'L') : PDF::Cell(0, 0, 'Kein Geburtstag gefunden', '', 0, 'L');
                 PDF::Ln(10);
-                ! empty($persons[$personindex]->gender) ? PDF::Cell(0, 0, $persons[$personindex]->gender, '', 0, 'L') : PDF::Cell(0, 0, 'Kein Geschlecht gefunden', '', 0, 'L');
+                ! empty($kids[$personindex]->gender) ? PDF::Cell(0, 0, $kids[$personindex]->gender, '', 0, 'L') : PDF::Cell(0, 0, 'Kein Geschlecht gefunden', '', 0, 'L');
                 PDF::SetXY(60, 105);
-                ! empty($persons[$personindex]->person_picture) ? PDF::Image(storage_path('/app/public/img/'.$persons[$personindex]->person_picture), 65, 105, 30) : PDF::Cell(0, 0, ' ', '', 0, 'L');
+                ! empty($kids[$personindex]->person_picture) ? PDF::Image(storage_path('/app/public/img/'.$kids[$personindex]->person_picture), 65, 105, 30) : PDF::Cell(0, 0, ' ', '', 0, 'L');
                 PDF::SetXY(60, 15);
-                ! empty($persons[$personindex]->barcode) ? PDF::write1DBarcode($persons[$personindex]->barcode, 'EAN13', '', 140, '', 10, 0.4, $style, 'L') : PDF::Cell(0, 0, 'Kein Barcode gefunden', '', 0, 'L');
+                ! empty($kids[$personindex]->barcode) ? PDF::write1DBarcode($kids[$personindex]->barcode, 'EAN13', '', 140, '', 10, 0.4, $style, 'L') : PDF::Cell(0, 0, 'Kein Barcode gefunden', '', 0, 'L');
                 PDF::SetXY(30, 160);
-                ! empty($persons[$personindex]->logo_file_name) ? PDF::Image(storage_path('/app/public/img/'.$persons[$personindex]->logo_file_name), 30, 160, 45) : PDF::Cell(0, 0, 'Kein Gruppen-Logo gefunden', '', 0, 'L');
+                ! empty($kids[$personindex]->logo_file_name) ? PDF::Image(storage_path('/app/public/img/'.$kids[$personindex]->logo_file_name), 30, 160, 45) : PDF::Cell(0, 0, 'Kein Gruppen-Logo gefunden', '', 0, 'L');
             }
 
             $personindex++;
@@ -143,26 +144,26 @@ class PrintIdentificationController extends Controller
             PDF::SetMargins(110, 5, 5, true);
             PDF::SetXY(110, 105);
 
-            if ($personindex < count($persons)) {
-                $birthday = Helpers::calc_birthday($persons, $personindex);
+            if ($personindex < count($kids)) {
+                $birthday = Helpers::calc_birthday($kids, $personindex);
 
-                ! empty($persons[$personindex]->scout_name) ? PDF::Cell(110, 0, $persons[$personindex]->scout_name, '', 0, 'L') : PDF::Cell(0, 0, 'Kein Pfadiname gefunden', '', 0, 'L');
+                ! empty($kids[$personindex]->scout_name) ? PDF::Cell(110, 0, $kids[$personindex]->scout_name, '', 0, 'L') : PDF::Cell(0, 0, 'Kein Pfadiname gefunden', '', 0, 'L');
                 PDF::Ln(5);
-                ! empty($persons[$personindex]->first_name) && ! empty($persons[$personindex]->last_name) ? PDF::Cell(110, 0, $persons[$personindex]->first_name.' '.$persons[$personindex]->last_name, '', 0, 'L') : PDF::Cell(0, 0, 'Kein Vor & Nachname gefunden', '', 0, 'L');
+                ! empty($kids[$personindex]->first_name) && ! empty($kids[$personindex]->last_name) ? PDF::Cell(110, 0, $kids[$personindex]->first_name.' '.$kids[$personindex]->last_name, '', 0, 'L') : PDF::Cell(0, 0, 'Kein Vor & Nachname gefunden', '', 0, 'L');
                 PDF::Ln(10);
-                ! empty($persons[$personindex]->address) ? PDF::Cell(0, 0, $persons[$personindex]->address, '', 0, 'L') : PDF::Cell(0, 0, 'Keine Adresse gefunden', '', 0, 'L');
+                ! empty($kids[$personindex]->address) ? PDF::Cell(0, 0, $kids[$personindex]->address, '', 0, 'L') : PDF::Cell(0, 0, 'Keine Adresse gefunden', '', 0, 'L');
                 PDF::Ln(5);
-                ! empty($persons[$personindex]->plz) && ! empty($persons[$personindex]->place) ? PDF::Cell(0, 0, $persons[$personindex]->plz.' '.$persons[$personindex]->place, '', 0, 'L') : PDF::Cell(0, 0, 'Kein PLZ & Ort gefunden', '', 0, 'L');
+                ! empty($kids[$personindex]->plz) && ! empty($kids[$personindex]->place) ? PDF::Cell(0, 0, $kids[$personindex]->plz.' '.$kids[$personindex]->place, '', 0, 'L') : PDF::Cell(0, 0, 'Kein PLZ & Ort gefunden', '', 0, 'L');
                 PDF::Ln(10);
                 ! empty($birthday) ? PDF::Cell(0, 0, $birthday, '', 0, 'L') : PDF::Cell(0, 0, 'Kein Geburtstag gefunden', '', 0, 'L');
                 PDF::Ln(10);
-                ! empty($persons[$personindex]->gender) ? PDF::Cell(0, 0, $persons[$personindex]->gender, '', 0, 'L') : PDF::Cell(0, 0, 'Kein Geschlecht gefunden', '', 0, 'L');
+                ! empty($kids[$personindex]->gender) ? PDF::Cell(0, 0, $kids[$personindex]->gender, '', 0, 'L') : PDF::Cell(0, 0, 'Kein Geschlecht gefunden', '', 0, 'L');
                 PDF::SetXY(165, 105);
-                ! empty($persons[$personindex]->person_picture) ? PDF::Image(storage_path('/app/public/img/'.$persons[$personindex]->person_picture), 170, 105, 30) : PDF::Cell(0, 0, ' ', '', 0, 'L');
+                ! empty($kids[$personindex]->person_picture) ? PDF::Image(storage_path('/app/public/img/'.$kids[$personindex]->person_picture), 170, 105, 30) : PDF::Cell(0, 0, ' ', '', 0, 'L');
                 PDF::SetXY(165, 15);
-                ! empty($persons[$personindex]->barcode) ? PDF::write1DBarcode($persons[$personindex]->barcode, 'EAN13', '', 140, '', 10, 0.4, $style, 'L') : PDF::Cell(0, 0, 'Kein Barcode gefunden', '', 0, 'L');
+                ! empty($kids[$personindex]->barcode) ? PDF::write1DBarcode($kids[$personindex]->barcode, 'EAN13', '', 140, '', 10, 0.4, $style, 'L') : PDF::Cell(0, 0, 'Kein Barcode gefunden', '', 0, 'L');
                 PDF::SetXY(135, 160);
-                ! empty($persons[$personindex]->logo_file_name) ? PDF::Image(storage_path('/app/public/img/'.$persons[$personindex]->logo_file_name), 140, 160, 45) : PDF::Cell(0, 0, 'Kein Gruppen-Logo gefunden', '', 0, 'L');
+                ! empty($kids[$personindex]->logo_file_name) ? PDF::Image(storage_path('/app/public/img/'.$kids[$personindex]->logo_file_name), 140, 160, 45) : PDF::Cell(0, 0, 'Kein Gruppen-Logo gefunden', '', 0, 'L');
             }
 
             $personindex++;
@@ -171,26 +172,26 @@ class PrintIdentificationController extends Controller
             PDF::SetMargins(5, 5, 5, true);
             PDF::SetXY(5, 200);
 
-            if ($personindex < count($persons)) {
-                $birthday = Helpers::calc_birthday($persons, $personindex);
+            if ($personindex < count($kids)) {
+                $birthday = Helpers::calc_birthday($kids, $personindex);
 
-                ! empty($persons[$personindex]->scout_name) ? PDF::Cell(0, 0, $persons[$personindex]->scout_name, '', 0, 'L') : PDF::Cell(0, 0, 'Kein Pfadiname gefunden', '', 0, 'L');
+                ! empty($kids[$personindex]->scout_name) ? PDF::Cell(0, 0, $kids[$personindex]->scout_name, '', 0, 'L') : PDF::Cell(0, 0, 'Kein Pfadiname gefunden', '', 0, 'L');
                 PDF::Ln(5);
-                ! empty($persons[$personindex]->first_name) && ! empty($persons[$personindex]->last_name) ? PDF::Cell(0, 0, $persons[$personindex]->first_name.' '.$persons[$personindex]->last_name, '', 0, 'L') : PDF::Cell(0, 0, 'Kein Vor & Nachname gefunden', '', 0, 'L');
+                ! empty($kids[$personindex]->first_name) && ! empty($kids[$personindex]->last_name) ? PDF::Cell(0, 0, $kids[$personindex]->first_name.' '.$kids[$personindex]->last_name, '', 0, 'L') : PDF::Cell(0, 0, 'Kein Vor & Nachname gefunden', '', 0, 'L');
                 PDF::Ln(10);
-                ! empty($persons[$personindex]->address) ? PDF::Cell(0, 0, $persons[$personindex]->address, '', 0, 'L') : PDF::Cell(0, 0, 'Keine Adresse gefunden', '', 0, 'L');
+                ! empty($kids[$personindex]->address) ? PDF::Cell(0, 0, $kids[$personindex]->address, '', 0, 'L') : PDF::Cell(0, 0, 'Keine Adresse gefunden', '', 0, 'L');
                 PDF::Ln(5);
-                ! empty($persons[$personindex]->plz) && ! empty($persons[$personindex]->place) ? PDF::Cell(0, 0, $persons[$personindex]->plz.' '.$persons[$personindex]->place, '', 0, 'L') : PDF::Cell(0, 0, 'Kein PLZ & Ort gefunden', '', 0, 'L');
+                ! empty($kids[$personindex]->plz) && ! empty($kids[$personindex]->place) ? PDF::Cell(0, 0, $kids[$personindex]->plz.' '.$kids[$personindex]->place, '', 0, 'L') : PDF::Cell(0, 0, 'Kein PLZ & Ort gefunden', '', 0, 'L');
                 PDF::Ln(10);
                 ! empty($birthday) ? PDF::Cell(0, 0, $birthday, '', 0, 'L') : PDF::Cell(0, 0, 'Kein Geburtstag gefunden', '', 0, 'L');
                 PDF::Ln(10);
-                ! empty($persons[$personindex]->gender) ? PDF::Cell(0, 0, $persons[$personindex]->gender, '', 0, 'L') : PDF::Cell(0, 0, 'Kein Geschlecht gefunden', '', 0, 'L');
+                ! empty($kids[$personindex]->gender) ? PDF::Cell(0, 0, $kids[$personindex]->gender, '', 0, 'L') : PDF::Cell(0, 0, 'Kein Geschlecht gefunden', '', 0, 'L');
                 PDF::SetXY(60, 200);
-                ! empty($persons[$personindex]->person_picture) ? PDF::Image(storage_path('/app/public/img/'.$persons[$personindex]->person_picture), 65, 200, 30) : PDF::Cell(0, 0, ' ', '', 0, 'L');
+                ! empty($kids[$personindex]->person_picture) ? PDF::Image(storage_path('/app/public/img/'.$kids[$personindex]->person_picture), 65, 200, 30) : PDF::Cell(0, 0, ' ', '', 0, 'L');
                 PDF::SetXY(60, 15);
-                ! empty($persons[$personindex]->barcode) ? PDF::write1DBarcode($persons[$personindex]->barcode, 'EAN13', '', 235, '', 10, 0.4, $style, 'L') : PDF::Cell(0, 0, 'Kein Barcode gefunden', '', 0, 'L');
+                ! empty($kids[$personindex]->barcode) ? PDF::write1DBarcode($kids[$personindex]->barcode, 'EAN13', '', 235, '', 10, 0.4, $style, 'L') : PDF::Cell(0, 0, 'Kein Barcode gefunden', '', 0, 'L');
                 PDF::SetXY(30, 255);
-                ! empty($persons[$personindex]->logo_file_name) ? PDF::Image(storage_path('/app/public/img/'.$persons[$personindex]->logo_file_name), 30, 255, 45) : PDF::Cell(0, 0, 'Kein Gruppen-Logo gefunden', '', 0, 'L');
+                ! empty($kids[$personindex]->logo_file_name) ? PDF::Image(storage_path('/app/public/img/'.$kids[$personindex]->logo_file_name), 30, 255, 45) : PDF::Cell(0, 0, 'Kein Gruppen-Logo gefunden', '', 0, 'L');
             }
 
             $personindex++;
@@ -199,26 +200,26 @@ class PrintIdentificationController extends Controller
             PDF::SetMargins(110, 5, 5, true);
             PDF::SetXY(110, 200);
 
-            if ($personindex < count($persons)) {
-                $birthday = Helpers::calc_birthday($persons, $personindex);
+            if ($personindex < count($kids)) {
+                $birthday = Helpers::calc_birthday($kids, $personindex);
 
-                ! empty($persons[$personindex]->scout_name) ? PDF::Cell(110, 0, $persons[$personindex]->scout_name, '', 0, 'L') : PDF::Cell(0, 0, 'Kein Pfadiname gefunden', '', 0, 'L');
+                ! empty($kids[$personindex]->scout_name) ? PDF::Cell(110, 0, $kids[$personindex]->scout_name, '', 0, 'L') : PDF::Cell(0, 0, 'Kein Pfadiname gefunden', '', 0, 'L');
                 PDF::Ln(5);
-                ! empty($persons[$personindex]->first_name) && ! empty($persons[$personindex]->last_name) ? PDF::Cell(110, 0, $persons[$personindex]->first_name.' '.$persons[$personindex]->last_name, '', 0, 'L') : PDF::Cell(0, 0, 'Kein Vor & Nachname gefunden', '', 0, 'L');
+                ! empty($kids[$personindex]->first_name) && ! empty($kids[$personindex]->last_name) ? PDF::Cell(110, 0, $kids[$personindex]->first_name.' '.$kids[$personindex]->last_name, '', 0, 'L') : PDF::Cell(0, 0, 'Kein Vor & Nachname gefunden', '', 0, 'L');
                 PDF::Ln(10);
-                ! empty($persons[$personindex]->address) ? PDF::Cell(0, 0, $persons[$personindex]->address, '', 0, 'L') : PDF::Cell(0, 0, 'Keine Adresse gefunden', '', 0, 'L');
+                ! empty($kids[$personindex]->address) ? PDF::Cell(0, 0, $kids[$personindex]->address, '', 0, 'L') : PDF::Cell(0, 0, 'Keine Adresse gefunden', '', 0, 'L');
                 PDF::Ln(5);
-                ! empty($persons[$personindex]->plz) && ! empty($persons[$personindex]->place) ? PDF::Cell(0, 0, $persons[$personindex]->plz.' '.$persons[$personindex]->place, '', 0, 'L') : PDF::Cell(0, 0, 'Kein PLZ & Ort gefunden', '', 0, 'L');
+                ! empty($kids[$personindex]->plz) && ! empty($kids[$personindex]->place) ? PDF::Cell(0, 0, $kids[$personindex]->plz.' '.$kids[$personindex]->place, '', 0, 'L') : PDF::Cell(0, 0, 'Kein PLZ & Ort gefunden', '', 0, 'L');
                 PDF::Ln(10);
                 ! empty($birthday) ? PDF::Cell(0, 0, $birthday, '', 0, 'L') : PDF::Cell(0, 0, 'Kein Geburtstag gefunden', '', 0, 'L');
                 PDF::Ln(10);
-                ! empty($persons[$personindex]->gender) ? PDF::Cell(0, 0, $persons[$personindex]->gender, '', 0, 'L') : PDF::Cell(0, 0, 'Kein Geschlecht gefunden', '', 0, 'L');
+                ! empty($kids[$personindex]->gender) ? PDF::Cell(0, 0, $kids[$personindex]->gender, '', 0, 'L') : PDF::Cell(0, 0, 'Kein Geschlecht gefunden', '', 0, 'L');
                 PDF::SetXY(165, 200);
-                ! empty($persons[$personindex]->person_picture) ? PDF::Image(storage_path('/app/public/img/'.$persons[$personindex]->person_picture), 170, 200, 30) : PDF::Cell(0, 0, ' ', '', 0, 'L');
+                ! empty($kids[$personindex]->person_picture) ? PDF::Image(storage_path('/app/public/img/'.$kids[$personindex]->person_picture), 170, 200, 30) : PDF::Cell(0, 0, ' ', '', 0, 'L');
                 PDF::SetXY(165, 15);
-                ! empty($persons[$personindex]->barcode) ? PDF::write1DBarcode($persons[$personindex]->barcode, 'EAN13', '', 235, '', 10, 0.4, $style, 'L') : PDF::Cell(0, 0, 'Kein Barcode gefunden', '', 0, 'L');
+                ! empty($kids[$personindex]->barcode) ? PDF::write1DBarcode($kids[$personindex]->barcode, 'EAN13', '', 235, '', 10, 0.4, $style, 'L') : PDF::Cell(0, 0, 'Kein Barcode gefunden', '', 0, 'L');
                 PDF::SetXY(135, 255);
-                ! empty($persons[$personindex]->logo_file_name) ? PDF::Image(storage_path('/app/public/img/'.$persons[$personindex]->logo_file_name), 140, 255, 45) : PDF::Cell(0, 0, 'Kein Gruppen-Logo gefunden', '', 0, 'L');
+                ! empty($kids[$personindex]->logo_file_name) ? PDF::Image(storage_path('/app/public/img/'.$kids[$personindex]->logo_file_name), 140, 255, 45) : PDF::Cell(0, 0, 'Kein Gruppen-Logo gefunden', '', 0, 'L');
             }
 
             $personindex++;
