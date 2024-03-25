@@ -12,7 +12,6 @@
         "bootstrap4-toggle": "^3.6.1",
         "font-awesome": "^4.7.0",
         "jquery": "^3.7.1",
-        "jquery-ui": "^1.13.2",
         "laravel-vite-plugin": "^1.0.2",
         "lodash": "^4.17.21",
         "popper.js": "^1.16.1",
