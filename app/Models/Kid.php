@@ -20,7 +20,7 @@ class Kid extends Model
         'place',
         'birthday',
         'gender',
-        'person_picture',
+        'image',
         'barcode',
         'seat_number',
         'course_passed',
