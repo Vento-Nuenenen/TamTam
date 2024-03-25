@@ -49,6 +49,8 @@ class KidsController extends Controller
      */
     public function store(Request $request)
     {
+        print_r($request->file());
+
         $scout_name = $request->input('scout_name');
         $first_name = $request->input('first_name');
         $last_name = $request->input('last_name');
@@ -60,11 +62,11 @@ class KidsController extends Controller
         $group = $request->input('group');
         $barcode = Barcode::generateBarcode();
 
-        if($request->file('tn_img')) {
-            $img_name = 'tnimg_'.time().'.'.$request->file('tn_img')->extension();
-            $request->file('tn_img')->move(storage_path('app/public/img'), $img_name);
+        if($request->file('image')) {
+            $image = 'tnimg_'.time().'.'.$request->file('image')->extension();
+            $request->file('image')->move(storage_path('app/public/img'), $image);
         } else {
-            $img_name = null;
+            $image = null;
         }
 
         if($gender) {
@@ -81,7 +83,7 @@ class KidsController extends Controller
             $gender = null;
         }
 
-        Kid::create([
+        $kid = new Kid([
             'scout_name' => $scout_name,
             'first_name' => $first_name,
             'last_name' => $last_name,
@@ -92,8 +94,9 @@ class KidsController extends Controller
             'birthday' => $birthday,
             'gender' => $gender,
             'group_id' => $group,
-            'image' => $img_name,
+            'image' => $image,
         ]);
+        $kid->group()->associate($group)->save();
 
         return redirect()->back()->with('message', 'Teilnehmer wurde erstellt.');
     }
@@ -112,7 +115,7 @@ class KidsController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, $kid): RedirectResponse
+    public function update(Request $request, $kid)
     {
         $scout_name = $request->input('scout_name');
         $first_name = $request->input('first_name');
@@ -125,11 +128,11 @@ class KidsController extends Controller
         $group = $request->input('group');
         $barcode = $request->input('barcode');
 
-        if($request->file('tn_img')) {
-            $img_name = 'tnimg_'.time().'.'.$request->file('tn_img')->extension();
-            $request->file('tn_img')->move(storage_path('app/public/img'), $img_name);
+        if($request->file('image')) {
+            $image = 'tnimg_'.time().'.'.$request->file('image')->extension();
+            $request->file('image')->move(storage_path('app/public/img'), $image);
         } else {
-            $img_name = null;
+            $image = null;
         }
 
         if($gender) {
@@ -146,7 +149,8 @@ class KidsController extends Controller
             $gender = null;
         }
 
-        Kid::find($kid)->update([
+        $kid = Kid::find($kid);
+        $kid->fill([
             'scout_name' => $scout_name,
             'first_name' => $first_name,
             'last_name' => $last_name,
@@ -156,9 +160,9 @@ class KidsController extends Controller
             'place' => $place,
             'birthday' => $birthday,
             'gender' => $gender,
-            'group_id' => $group,
-            'image' => $img_name,
+            'image' => $image,
         ]);
+        $kid->group()->associate($group)->save();
 
         return redirect()->back()->with('message', 'Teilnehmer wurde aktualisiert.');
     }

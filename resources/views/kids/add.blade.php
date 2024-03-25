@@ -205,15 +205,15 @@
                     </div>
                 </div>
 
-                <div class="form-group has-feedback row {{ $errors->has('tn_img') ? ' has-error ' : '' }}">
-                    {!! Form::label('tn_img', 'Foto', array('class' => 'col-md-3 control-label')); !!}
+                <div class="form-group has-feedback row {{ $errors->has('image') ? ' has-error ' : '' }}">
+                    {!! Form::label('image', 'Foto', array('class' => 'col-md-3 control-label')); !!}
                     <div class="col-md-9">
                         <div class="input-group">
-                            <input type="file" accept="image/*" id="tn_img" name="tn_img" />
+                            <input type="file" accept="image/*" id="image" name="image" />
                         </div>
-                        @if ($errors->has('tn_img'))
+                        @if ($errors->has('image'))
                             <span class="help-block">
-                                <strong>{{ $errors->first('tn_img') }}</strong>
+                                <strong>{{ $errors->first('image') }}</strong>
                             </span>
                         @endif
                     </div>
