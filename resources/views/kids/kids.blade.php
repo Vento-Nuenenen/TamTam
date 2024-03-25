@@ -67,7 +67,7 @@
                                 @endif
                             </td>
                             <td>
-                                <img width="80px" src="{{ asset('storage/img/' . $kid->person_picture) }}">
+                                <img width="80px" src="{{ asset('storage/img/' . $kid->image) }}">
                             </td>
                             <td>
                                 <button onclick="location.href='{{ route('edit-kids',$kid->id) }}'" class="btn btn-danger ml-2"><span class="fa fa-edit"></span></button>

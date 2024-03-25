@@ -76,7 +76,7 @@ class PrintIdentificationController extends Controller
                 PDF::Ln(10);
                 ! empty($kids[$personindex]->gender) ? PDF::Cell(0, 0, $kids[$personindex]->gender, '', 0, 'L') : PDF::Cell(0, 0, 'Kein Geschlecht gefunden', '', 0, 'L');
                 PDF::SetXY(60, 5);
-                ! empty($kids[$personindex]->person_picture) ? PDF::Image(storage_path('/app/public/img/'.$kids[$personindex]->person_picture), 65, 5, 30) : PDF::Cell(0, 0, ' ', '', 0, 'L');
+                ! empty($kids[$personindex]->image) ? PDF::Image(storage_path('/app/public/img/'.$kids[$personindex]->image), 65, 5, 30) : PDF::Cell(0, 0, ' ', '', 0, 'L');
                 PDF::SetXY(60, 15);
                 ! empty($kids[$personindex]->barcode) ? PDF::write1DBarcode($kids[$personindex]->barcode, 'EAN13', '', 40, '', 10, 0.4, $style, 'L') : PDF::Cell(0, 0, 'Kein Barcode gefunden', '', 0, 'L');
                 PDF::SetXY(30, 70);
