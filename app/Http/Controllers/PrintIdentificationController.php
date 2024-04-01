@@ -45,6 +45,7 @@ class PrintIdentificationController extends Controller
         PDF::SetAuthor(config('app.name'));
         PDF::SetMargins(5, 5, 5, true);
         PDF::SetAutoPageBreak(false, 0);
+        PDF::setFontStretching(90);
 
         for ($i = 0; $i < $countpages; $i++) {
             PDF::AddPage('P', 'A4', true, false);
