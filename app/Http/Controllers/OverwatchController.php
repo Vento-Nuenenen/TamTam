@@ -16,7 +16,7 @@ class OverwatchController extends Controller
 
             $kids = DB::select("SELECT kids.*, points.*, groups.name as group_name, GROUP_CONCAT(points.points) AS points,
 				GROUP_CONCAT(points.is_addition) AS additions FROM `kids`
-  			    LEFT JOIN `points` ON `points`.`FK_KID` = `kids`.`id`
+  			    LEFT JOIN `points` ON `points`.`kid_id` = `kids`.`id`
   			    LEFT JOIN `groups` ON `kids`.`group_id` = `groups`.`id` WHERE `kids`.`barcode` LIKE $barcode
  				GROUP BY kids.id;");
 
