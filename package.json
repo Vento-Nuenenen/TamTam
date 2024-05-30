@@ -15,7 +15,7 @@
         "laravel-vite-plugin": "^1.0.4",
         "lodash": "^4.17.21",
         "popper.js": "^1.16.1",
-        "sass": "^1.77.2",
+        "sass": "^1.77.3",
         "vite": "^5.2.12"
     }
 }
