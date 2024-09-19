@@ -402,10 +402,10 @@ rollup@^4.20.0:
     "@rollup/rollup-win32-x64-msvc" "4.21.0"
     fsevents "~2.3.2"
 
-sass@^1.79.0:
-  version "1.79.0"
-  resolved "https://registry.yarnpkg.com/sass/-/sass-1.79.0.tgz#4a58442b6c094ac57a0805519bff6133d70590c9"
-  integrity sha512-9Q1xXsm9XT54yYkmQAoH3vCMEIavwWWQGJ3cZ0WJAgecR4edDDTdtiPyEeFDNWO/hLCy3qZKvwjK4ulPR5Yzow==
+sass@^1.79.2:
+  version "1.79.2"
+  resolved "https://registry.yarnpkg.com/sass/-/sass-1.79.2.tgz#e0ee2877eaadaf17b4086fd15783e625bb77447e"
+  integrity sha512-YmT1aoF1MwHsZEu/eXhbAJNsPGAhNP4UixW9ckEwWCvPcVdVF0/C104OGDVEqtoctKq0N+wM20O/rj+sSPsWeg==
   dependencies:
     chokidar "^4.0.0"
     immutable "^4.0.0"
