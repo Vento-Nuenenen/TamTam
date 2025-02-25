@@ -615,20 +615,20 @@
         },
         {
             "name": "elibyy/tcpdf-laravel",
-            "version": "11.2.1",
+            "version": "11.3.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/elibyy/tcpdf-laravel.git",
-                "reference": "f41bef4830f46519edb6115b19fb305d836086f6"
+                "reference": "c22059190d00ac7d486e34bd6a5037ee5df2369b"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/elibyy/tcpdf-laravel/zipball/f41bef4830f46519edb6115b19fb305d836086f6",
-                "reference": "f41bef4830f46519edb6115b19fb305d836086f6",
+                "url": "https://api.github.com/repos/elibyy/tcpdf-laravel/zipball/c22059190d00ac7d486e34bd6a5037ee5df2369b",
+                "reference": "c22059190d00ac7d486e34bd6a5037ee5df2369b",
                 "shasum": ""
             },
             "require": {
-                "illuminate/support": "^6.0|^7.0|^8.0|^9.0|^10.0|^11.0",
+                "illuminate/support": "^6.0|^7.0|^8.0|^9.0|^10.0|^11.0|^12.0",
                 "tecnickcom/tcpdf": "6.2.*|6.3.*|6.4.*|6.5.*|6.6.*|6.7.*|6.8.*|dev-main"
             },
             "type": "library",
@@ -665,9 +665,9 @@
             ],
             "support": {
                 "issues": "https://github.com/elibyy/tcpdf-laravel/issues",
-                "source": "https://github.com/elibyy/tcpdf-laravel/tree/11.2.1"
+                "source": "https://github.com/elibyy/tcpdf-laravel/tree/11.3.0"
             },
-            "time": "2025-01-16T06:06:28+00:00"
+            "time": "2025-02-05T08:39:29+00:00"
         },
         {
             "name": "fruitcake/php-cors",
@@ -5711,16 +5711,16 @@
         },
         {
             "name": "tecnickcom/tcpdf",
-            "version": "6.8.0",
+            "version": "6.8.2",
             "source": {
                 "type": "git",
                 "url": "https://github.com/tecnickcom/TCPDF.git",
-                "reference": "14ffa0e308f5634aa2489568b4b90b24073b6731"
+                "reference": "f7a781073e1645062f163e058139e2f89355d420"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/tecnickcom/TCPDF/zipball/14ffa0e308f5634aa2489568b4b90b24073b6731",
-                "reference": "14ffa0e308f5634aa2489568b4b90b24073b6731",
+                "url": "https://api.github.com/repos/tecnickcom/TCPDF/zipball/f7a781073e1645062f163e058139e2f89355d420",
+                "reference": "f7a781073e1645062f163e058139e2f89355d420",
                 "shasum": ""
             },
             "require": {
@@ -5772,7 +5772,7 @@
             ],
             "support": {
                 "issues": "https://github.com/tecnickcom/TCPDF/issues",
-                "source": "https://github.com/tecnickcom/TCPDF/tree/6.8.0"
+                "source": "https://github.com/tecnickcom/TCPDF/tree/6.8.2"
             },
             "funding": [
                 {
@@ -5780,7 +5780,7 @@
                     "type": "custom"
                 }
             ],
-            "time": "2024-12-23T13:34:57+00:00"
+            "time": "2025-01-26T14:03:12+00:00"
         },
         {
             "name": "tijsverkoyen/css-to-inline-styles",
